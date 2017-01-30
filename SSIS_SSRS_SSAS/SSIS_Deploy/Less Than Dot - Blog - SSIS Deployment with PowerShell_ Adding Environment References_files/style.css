@@ -1,0 +1,23 @@
+/*
+Theme Name: LessThanDot 2009
+Theme URI: http://lessthandot.com
+Description: A theme built to duplicate the 2009 LessThanDot redesign style.
+Author: Eli Weinstock-Herman (@tarwn)
+Author URI: http://lessthandot.com
+Version: 1.0
+Tags: lessthandot, awesome
+
+License: Only LessThanDot can use it, nyah nyah
+License URI: http://lessthandot.com
+
+This is a basic theme meant to duplicate the current design of the LessThanDot website (implemented in 2009)
+and pave the way for a future redesign once we have moved fully over and decided what we are going to do with
+the wiki and forums.
+*/
+
+
+/* copied from evo blog style for temporary purposes until we replace/reskin site */
+* {
+	padding: 0px;
+	margin: 0px;
+}

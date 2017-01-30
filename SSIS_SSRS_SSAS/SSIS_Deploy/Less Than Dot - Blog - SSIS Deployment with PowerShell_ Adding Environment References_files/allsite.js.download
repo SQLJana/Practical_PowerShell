@@ -1,0 +1,79 @@
+
+(function($){
+
+	/* 
+	imgShrink - reduces the size of images conatined in the postbody and bp classes
+			and provides a link to display them larger
+	*/
+	function imgShrinkM(container){
+		var w = $(container).width(); 
+		$(container + ' img').each( function(){
+			d=$(this); 
+			if(w < d.width()) {
+				d.css("height","auto");
+				d.animate({width: (w*.9) + 'px'}); 
+				if(this.className.indexOf('resdImg') < 0){
+					d.after("<div class='note'>Image reduced in size to fit your browser, click for original size</div>"); 
+					d.click(function(){ 
+						var s = this.src;
+						var t = ($(window).scrollTop() + 10)// can't use, jquery 1.3.2 broke scrollTop - waiting on 1.3.3 */
+						if($('#imgBig').length == 0){
+							$(document.body).append('<div id="imgBig" style="position: absolute; top: 0px; left: 0px;"><div id="imgBigM" style="width: 100%; height: 100%; z-index:1000; display:none; position: absolute; background-color: #333333;"></div><img id="imgBigI" style="margin-top: 100px;z-index:1001; position: absolute; left: 100px;"></img></div>');
+							$('#imgBig').click(function(){
+								$('#imgBigM').hide();
+								$('#imgBigM').fadeTo('fast',0.0);
+								$('#imgBigI').hide();
+								$('#imgBig').hide();
+							});
+						}
+						$('#imgBigM').css('width',$(document.body).width() + 'px');
+						$('#imgBigM').css('height',$(document.body).height() + 'px');
+						$('#imgBig').show();
+						$('#imgBigM').css('opacity',0).show().fadeTo("slow",.8,function(){
+							$('#imgBigI')[0].src = s;
+							$('#imgBigI').css('top',t + 'px');
+							if($(window).width() - $('#imgBigI').width() > 0){
+								$('#imgBigI').css('left',($(window).width()/2 - $('#imgBigI').width()/2) + 'px');
+								$('#imgBigM').css('width',$(window).width() + 'px');
+							}
+							else{
+								/*alert(($('#imgBigI').width() + 40));*/
+								$('#imgBigI').css('left','20px');
+								$('#imgBigM').css('width',($('#imgBigI').width() + 40) + 'px');
+							}
+							$('#imgBigI').show('fast');
+						});
+					});
+					this.className += ' resdImg';
+				}
+			}
+		})
+	}
+
+	/* high level binds */
+	function imgShrink(){	
+		imgShrinkM('.postbody');
+		imgShrinkM('.evo_post_text');	
+		imgShrinkM('.post-content');
+	}
+
+	function twitterCount()
+	{
+		if(typeof $.jTwitter !== 'undefined'){
+			$.jTwitter('LessThanDot',1, function(userdata)
+			{
+				$('#social_twitter').attr(
+				{
+					title: "Follow us on Twitter, like " + userdata[0].user.followers_count + " others."		});
+			});
+		}
+	}
+	 
+	$(function(){
+		imgShrink(); 
+		twitterCount();
+	});
+
+	$(window).resize(imgShrink);
+
+})(jQuery);

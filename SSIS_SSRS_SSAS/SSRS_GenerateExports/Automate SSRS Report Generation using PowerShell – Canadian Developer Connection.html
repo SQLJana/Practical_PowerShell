@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<!-- saved from url=(0101)https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/ -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="width=device-width">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link rel="stylesheet" href="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/bootstrap.min.css">
+	<link rel="pingback" href="https://blogs.msdn.microsoft.com/cdndevs/xmlrpc.php">
+		<!--[if lt IE 9]>
+	<script src="https://blogs.msdn.microsoft.com/cdndevs/wp-content/themes/microsoft/js/html5.js"></script>
+	<![endif]-->
+	<title>Automate SSRS Report Generation using PowerShell – Canadian Developer Connection</title>
+<link rel="alternate" type="application/rss+xml" title="Canadian Developer Connection » Automate SSRS Report Generation using PowerShell Comments Feed" href="https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/feed/">
+		<script type="text/javascript" async="" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/linkid.js.download"></script><script async="" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/gtm.js.download"></script><script async="" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/analytics.js.download"></script><script id="facebook-jssdk" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/sdk.js.download"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"https:\/\/blogs.msdn.microsoft.com\/cdndevs\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.5.3"}};
+			!function(a,b,c){function d(a){var c,d,e,f=b.createElement("canvas"),g=f.getContext&&f.getContext("2d"),h=String.fromCharCode;if(!g||!g.fillText)return!1;switch(g.textBaseline="top",g.font="600 32px Arial",a){case"flag":return g.fillText(h(55356,56806,55356,56826),0,0),f.toDataURL().length>3e3;case"diversity":return g.fillText(h(55356,57221),0,0),c=g.getImageData(16,16,1,1).data,d=c[0]+","+c[1]+","+c[2]+","+c[3],g.fillText(h(55356,57221,55356,57343),0,0),c=g.getImageData(16,16,1,1).data,e=c[0]+","+c[1]+","+c[2]+","+c[3],d!==e;case"simple":return g.fillText(h(55357,56835),0,0),0!==g.getImageData(16,16,1,1).data[0];case"unicode8":return g.fillText(h(55356,57135),0,0),0!==g.getImageData(16,16,1,1).data[0]}return!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i;for(i=Array("simple","flag","unicode8","diversity"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/wp-emoji-release.min.js.download" type="text/javascript"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="wds-ratings-css" href="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/wds-ratings.css" type="text/css" media="all">
+<link rel="stylesheet" id="microsoft-parent-style-css" href="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="microsoft-child-style-css" href="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/style(1).css" type="text/css" media="all">
+<script type="text/javascript" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/jquery-1.12.1.min.js.download"></script>
+<script type="text/javascript" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/bootstrap.min.js.download"></script>
+<script type="text/javascript" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/single.js.download"></script>
+<link rel="https://api.w.org/" href="https://blogs.msdn.microsoft.com/cdndevs/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://blogs.msdn.microsoft.com/cdndevs/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://blogs.msdn.microsoft.com/cdndevs/wp-includes/wlwmanifest.xml"> 
+
+<link rel="canonical" href="https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/">
+<link rel="shortlink" href="https://blogs.msdn.microsoft.com/cdndevs/?p=22392">
+<link rel="alternate" type="application/json+oembed" href="https://blogs.msdn.microsoft.com/cdndevs/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblogs.msdn.microsoft.com%2Fcdndevs%2F2015%2F10%2F14%2Fautomate-ssrs-report-generation-using-powershell%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://blogs.msdn.microsoft.com/cdndevs/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblogs.msdn.microsoft.com%2Fcdndevs%2F2015%2F10%2F14%2Fautomate-ssrs-report-generation-using-powershell%2F&amp;format=xml">
+<script type="text/javascript">
+jQuery( window ).load( function() {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('require', 'linkid');
+        ga('create', 'UA-65691138-1', 'auto');
+        ga('send', 'pageview');
+    } );
+</script>
+			<!-- Begin Custom CSS --><style type="text/css" id="wds-custom-css">
+			.ms-blog-header {
+    background-color: #BE303D;
+    color: white;
+}
+
+@supports (-ms-accelerator:true) {
+  .ms-blog-header { 
+         background-color: #aa3235;
+    color: white;
+  } 
+}
+			</style><!-- End Custom CSS -->
+			    <link rel="shortcut icon" href="https://blogs.msdn.microsoft.com/cdndevs/wp-content/themes/microsoft-msdn/images/favicon-msdn.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Automate SSRS Report Generation using PowerShell">
+<meta property="og:url" content="https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/">
+<meta property="og:site_name" content="Canadian Developer Connection">
+<meta property="og:description" content="This blog post is tested on SQL Server 2014 and PowerShell V5. PowerShell has become more feature-rich in every version. We are now looking at PowerShell V5 (currently can be downloaded as part of Windows Management Framework v5 April 2015 Preview). The support landscape with SQL Server hasn’t changed much. There isn’t a drastic increase...">
+<meta property="og:image" content="https://sqlbelle.files.wordpress.com/2015/08/ssrs-parameters-1.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Automate SSRS Report Generation using PowerShell">
+<meta name="twitter:url" content="https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/">
+<meta name="twitter:description" content="This blog post is tested on SQL Server 2014 and PowerShell V5. PowerShell has become more feature-rich in every version. We are now looking at PowerShell V5 (currently can be downloaded as part of Windows Management Framework v5 April 2015 Preview). The support landscape with SQL Server hasn’t changed much. There isn’t a drastic increase...">
+<meta name="twitter:image" content="https://sqlbelle.files.wordpress.com/2015/08/ssrs-parameters-1.png">
+		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+		<style type="text/css" id="syntaxhighlighteranchor"></style>
+<link href="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/style(2).css" rel="stylesheet" type="text/css"><link href="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/icons.css" rel="stylesheet" type="text/css"><style type="text/css">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}.fb_link img{border:none}@keyframes fb_transform{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}.fb_reset .fb_dialog_legacy{overflow:visible}.fb_dialog_advanced{padding:10px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px}.fb_dialog_content{background:#fff;color:#333}.fb_dialog_close_icon{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;_background-image:url(https://static.xx.fbcdn.net/rsrc.php/v3/yL/r/s816eWC-2sl.gif);cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{top:5px;left:5px;right:auto}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent;_background-image:url(https://static.xx.fbcdn.net/rsrc.php/v3/yL/r/s816eWC-2sl.gif)}.fb_dialog_close_icon:active{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent;_background-image:url(https://static.xx.fbcdn.net/rsrc.php/v3/yL/r/s816eWC-2sl.gif)}.fb_dialog_loader{background-color:#f6f7f9;border:1px solid #606060;font-size:24px;padding:20px}.fb_dialog_top_left,.fb_dialog_top_right,.fb_dialog_bottom_left,.fb_dialog_bottom_right{height:10px;width:10px;overflow:hidden;position:absolute}.fb_dialog_top_left{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 0;left:-10px;top:-10px}.fb_dialog_top_right{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 -10px;right:-10px;top:-10px}.fb_dialog_bottom_left{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 -20px;bottom:-10px;left:-10px}.fb_dialog_bottom_right{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 -30px;right:-10px;bottom:-10px}.fb_dialog_vert_left,.fb_dialog_vert_right,.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{position:absolute;background:#525252;filter:alpha(opacity=70);opacity:.7}.fb_dialog_vert_left,.fb_dialog_vert_right{width:10px;height:100%}.fb_dialog_vert_left{margin-left:-10px}.fb_dialog_vert_right{right:0;margin-right:-10px}.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{width:100%;height:10px}.fb_dialog_horiz_top{margin-top:-10px}.fb_dialog_horiz_bottom{bottom:0;margin-bottom:-10px}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #365899;color:#fff;font-size:14px;font-weight:bold;margin:0}.fb_dialog_content .dialog_title>span{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{-webkit-transform:none;height:100%;margin:0;overflow:visible;position:absolute;top:-10000px;left:0;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ya/r/3rhSv5V8j3o.gif) white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{width:auto;height:auto;min-height:initial;min-width:initial;background:none}.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner{width:100%}.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content{background:none}.loading.centered #fb_dialog_loader_close{color:#fff;display:block;padding-top:20px;clear:both;font-size:18px}#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .45);position:absolute;bottom:0;left:0;right:0;top:0;width:100%;min-height:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_content .dialog_header{-webkit-box-shadow:white 0 1px 1px -1px inset;background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#738ABA), to(#2C4987));border-bottom:1px solid;border-color:#1d4088;color:#fff;font:14px Helvetica, sans-serif;font-weight:bold;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{-webkit-font-smoothing:subpixel-antialiased;height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4966A6), color-stop(.5, #355492), to(#2A4887));border:1px solid #29487d;-webkit-background-clip:padding-box;-webkit-border-radius:3px;-webkit-box-shadow:rgba(0, 0, 0, .117188) 0 1px 1px inset, rgba(255, 255, 255, .167969) 0 1px 0;display:inline-block;margin-top:3px;max-width:85px;line-height:18px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{border:none;background:none;color:#fff;font:12px Helvetica, sans-serif;font-weight:bold;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #555;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f6f7f9;border:1px solid #555;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_button{text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}#fb_dialog_loader_spinner{animation:rotateSpinner 1.2s linear infinite;background-color:transparent;background-image:url(https://static.xx.fbcdn.net/rsrc.php/v3/yD/r/t-wz8gw1xG1.png);background-repeat:no-repeat;background-position:50% 50%;height:24px;width:24px}@keyframes rotateSpinner{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_hide_iframes iframe{position:relative;left:-10000px}.fb_iframe_widget_loader{position:relative;display:inline-block}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}.fb_iframe_widget_loader iframe{min-height:32px;z-index:2;zoom:1}.fb_iframe_widget_loader .FB_Loader{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/y9/r/jKEcVPZFk-2.gif) no-repeat;height:32px;width:32px;margin-left:-16px;position:absolute;left:50%;z-index:4}</style></head>
+
+<body class="single single-post postid-22392 single-format-standard has-site-logo">
+<div id="page" class="site container-fluid">
+
+	<header id="site-header" class="site-header row" role="banner">
+		<div id="site-header-global-wrapper" class="site-header-global-wrapper">
+			<div id="site-header-global" class="site-header-global">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#site-profile-menu">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<div id="site-logo" class="col-sm-5 row navbar-header">
+					<div id="header-microsoft-logo">
+						<a id="home-link" href="http://msdn.microsoft.com/">
+							<img id="header-microsoft-logo-svg" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/ms-logo-gray.svg" alt="Microsoft logo">
+							<span id="brand">
+								<span id="brand-separator">|</span>
+								<span id="brand-name"></span>
+							</span>
+						</a>
+					</div>
+				</div>
+				<div id="site-header-global-right" class="col-sm-7">
+					<div id="site-profile-menu" class="navbar-collapse collapse">
+						<div id="search-form-wrapper">
+														<form id="search-form" role="search" action="https://social.msdn.microsoft.com/search/en-US" home-url="https://blogs.msdn.microsoft.com/cdndevs" autocomplete="off">
+								<div class="input-group">
+																			<input name="rq" value="site:blogs.msdn.microsoft.com/cdndevs" type="hidden">
+										<input name="rn" value="cdndevs" type="hidden">
+																		<input type="hidden" name="ral" value="1">
+									<input type="text" class="form-control" placeholder="Search" name="query" id="srch-term">
+									<div class="input-group-btn">
+										<button aria-label="Search" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+									</div>
+								</div>
+							</form>
+							<div id="search-option" style="display: none;">
+								<div class="search-filter" id="search-filter-site" tabindex="0">
+									<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+									<span class="search-text">Search MSDN</span>
+								</div>
+								<div class="search-filter" tabindex="0" id="search-filter-all-blogs">
+									<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+									<span class="search-text">Search all blogs</span>
+								</div>
+																	<div class="search-filter selected" tabindex="0" id="search-filter-this-blog">
+										<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+										<span class="search-text">Search this blog</span>
+									</div>
+															</div>
+						</div>
+						<div id="me-control">
+															<a href="https://blogs.msdn.microsoft.com/wp-login.php?aadsso_action=login">Sign in</a>
+													</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+		<div id="site-header-blog-wrapper" class="site-header-blog-wrapper ms-blog-header clear-both">
+			<div id="site-header-blog" class="site-header-blog">
+				<nav class="navbar navbar-inverse">
+					<div id="blog-logo-area" class="navbar-header">
+						<div id="blog-logo" data-toggle="collapse" data-target="#blog-menu">
+												<div id="blog-logo-image" class="ms-blog-logo">
+				<span class="for-desktop">
+					<a href="https://blogs.msdn.microsoft.com/cdndevs/" class="site-logo-link" rel="home"><img width="220" height="165" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/CDN.png" class="site-logo attachment-full" alt="Canadian Developers" data-size="full"></a>				</span>
+				<span class="for-mobile">
+					<img width="220" height="165" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/CDN.png" class="site-logo attachment-full" alt="Canadian Developers" data-size="full">				</span>
+			</div>
+							<div id="blog-logo-text">
+				<h1 class="site-title ms-blog-title">
+					<a href="https://blogs.msdn.microsoft.com/cdndevs" class="for-desktop">
+						Canadian Developer Connection					</a>
+					<a href="https://blogs.msdn.microsoft.com/cdndevs" class="for-mobile">
+						Canadian Developer Connection					</a>
+				</h1>
+				<p class="site-description ms-blog-description">The latest developer news and events in Canada!</p>
+			</div>
+									</div>
+					</div>
+									</nav>
+			</div>
+		</div>
+		<div id="site-header-image-wrapper" class="ms-blog-banner">
+			<div id="site-header-image">
+											</div>
+		</div>
+	</header>
+
+	<div id="site-content" class="site-content row">
+
+	<div id="primary" class="content-area col-sm-9">
+		<div id="single-content" class="div-content">
+
+			
+				
+<article id="post-22392" class="post-22392 post type-post status-publish format-standard hentry category-uncategorized tag-powershell tag-sql tag-sql-server tag-ssrs">
+
+	<header class="entry-header single">
+		<h1 class="entry-title">Automate SSRS Report Generation using PowerShell</h1>		<div class="rating-wrap">
+		<div id="star-rating-22392" class="wds-ratings" data-rating="5" data-userrating="0" data-postid="22392" data-container="body" data-toggle="tooltip" title="1 user(s) rated">
+			<div class="wds-ratings-inner-wrap">
+				<div>
+					<div class="wds-ratings-stars wds-ratings-stars-enable-editing current-rating" data-stars="5"><span class="star-1">★</span><span class="star-2">★</span><span class="star-3">★</span><span class="star-4">★</span><span class="star-5">★</span></div><div class="wds-ratings-stars wds-ratings-stars-enable-editing current-rating" data-stars="4"><span class="star-1">★</span><span class="star-2">★</span><span class="star-3">★</span><span class="star-4">★</span></div><div class="wds-ratings-stars wds-ratings-stars-enable-editing current-rating" data-stars="3"><span class="star-1">★</span><span class="star-2">★</span><span class="star-3">★</span></div><div class="wds-ratings-stars wds-ratings-stars-enable-editing current-rating" data-stars="2"><span class="star-1">★</span><span class="star-2">★</span></div><div class="wds-ratings-stars wds-ratings-stars-enable-editing current-rating" data-stars="1"><span class="star-1">★</span></div>
+				</div>
+			</div>
+		</div>
+		</div>		<div class="clear-both"></div>
+		<div class="entry-meta">
+			<img alt="" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/9ae33fc70459cce558c2d0a610ada865" srcset="https://secure.gravatar.com/avatar/9ae33fc70459cce558c2d0a610ada865?s=44&amp;d=mm&amp;r=g 2x" class="avatar avatar-22 photo" height="22" width="22"><span class="byline"><span class="author vcard"><a class="url fn n profile-usercard-hover" data-profile-userid="" href="https://blogs.msdn.microsoft.com/cdndevs/author/msdn-santosoutlook-com/">msdn.santos@outlook.com</a></span></span><span class="posted-on posted-on-margin"><span class="screen-reader-text"></span><time class="entry-date published updated" datetime="2015-10-14T06:55:00+00:00">October 14, 2015</time></span><span class="comments-link"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span><a href="https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/#respond">0</a></span>				<span class="social-icons-wrap">
+		<ul class="social-icons">
+			<li class="social-icon facebook"><a data-social="{&quot;type&quot;:&quot;facebook&quot;, &quot;url&quot;:&quot;https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/&quot;, &quot;text&quot;: &quot;Automate SSRS Report Generation using PowerShell&quot;}" href="https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/#" id="get_post_like_count">0</a></li>
+			<li class="social-icon twitter"><a data-social="{&quot;type&quot;:&quot;twitter&quot;, &quot;url&quot;:&quot;https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/&quot;, &quot;text&quot;: &quot;Automate SSRS Report Generation using PowerShell&quot;}" href="https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/#" id="post_tweet_count">0</a></li>
+			<li class="social-icon linkedin"><a data-social="{&quot;type&quot;:&quot;linkedin&quot;, &quot;url&quot;:&quot;https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/&quot;, &quot;text&quot;: &quot;Automate SSRS Report Generation using PowerShell&quot;}" href="https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/#" id="get_post_linkedin_count">0</a></li>
+		</ul>
+	</span><!-- .social-icons-wrap -->
+	<script type="text/javascript">
+		// Get social counts
+		jQuery( window ).load(function () {
+			jQuery.getScript('https://blogs.msdn.microsoft.com/cdndevs/wp-content/themes/microsoft/js/social-counts.js?ver=09092016')
+				.done(function(script,textStatus) {
+					window.msdnsocial.ajax('https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/');
+				});
+		});
+	</script>
+		</div>
+		<hr>
+	</header><!-- .entry-header -->
+
+	<div class="entry-content single">
+		<p><em>This blog post is tested on SQL Server 2014 and PowerShell V5.      <br></em>    <br>PowerShell has become more feature-rich in every version. We are now looking at PowerShell V5 (<a href="https://www.microsoft.com/en-us/download/details.aspx?id=46889" target="_blank">currently can be downloaded as part of Windows Management Framework v5 April 2015 Preview</a>).</p>
+<p>The support landscape with SQL Server hasn’t changed much. There isn’t a drastic increase in SQL Server cmdlets. However, the language and feature improvements in PowerShell in general improve how we can work with SQL Server.</p>
+<p>One area where we can use PowerShell is with SQL Server Reporting Services (SSRS). I blogged about this a while back, but it’s time to revisit and expand on how we can use PowerShell to automate report generation.</p>
+<p>In this blog post I will focus on generating PDF reports via scripting. Let’s tackle this piece by piece first, and we’ll put everything in a nice little script at the end of the post.</p>
+<p>First, we need to add the ReportViewer assembly to the script. For this I am using the <a href="https://msdn.microsoft.com/en-us/library/microsoft.reporting.winforms.reportviewer.aspx" target="_blank">WinForms report viewer </a>assembly. There is similar <a href="https://msdn.microsoft.com/en-us/library/microsoft.reporting.webforms.reportviewer.aspx" target="_blank">report viewer assembly for web forms</a>. <!-- HTML generated using hilite.me -->
+</p><div style="overflow: auto; border-top: gray 0.1em solid; border-right: gray 0.1em solid; width: auto; background: #ffffff; border-bottom: gray 0.1em solid; padding-bottom: 0.2em; padding-top: 0.2em; padding-left: 0.6em; border-left: gray 0.8em solid; padding-right: 0.6em">
+<pre style="margin: 0px; line-height: 125%">```powershell 
+<span style="color: #007020">Add-Type</span> -AssemblyName <span style="background-color: #fff0f0">"Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"</span> 
+``` 
+Once we have loaded the assemblies, we can create a ReportViewer object
+
+```powerhshell 
+<span style="color: #996633">$rv</span> = <span style="color: #007020">New-Object</span> Microsoft.Reporting.WinForms.ReportViewer 
+```</pre>
+</div>
+<p>Next we have to start building the report properties, including the Report Server URL and the path to the report we want to render. <a href="https://msdn.microsoft.com/en-us/library/microsoft.reporting.winforms.reportviewer.aspx" target="_blank">Remote processing mode</a> just specifies that work will be done on the server.</p>
+<!-- HTML generated using hilite.me -->
+<div style="overflow: auto; border-top: gray 0.1em solid; border-right: gray 0.1em solid; width: auto; background: #ffffff; border-bottom: gray 0.1em solid; padding-bottom: 0.2em; padding-top: 0.2em; padding-left: 0.6em; border-left: gray 0.8em solid; padding-right: 0.6em">
+<pre style="margin: 0px; line-height: 125%">```powershell 
+<span style="color: #996633">$rv</span>.ServerReport.ReportServerUrl = <span style="background-color: #fff0f0">"http://localhost/ReportServer"</span> 
+<span style="color: #996633">$rv</span>.ServerReport.ReportPath = <span style="background-color: #fff0f0">"/Sales Reports/Sales Report"</span> 
+<span style="color: #996633">$rv</span>.ProcessingMode = <span style="background-color: #fff0f0">"Remote"</span>
+
+```</pre>
+</div>
+<p>Next is we need to understand what parameters we need to send to the report. We can discover this by looking at the report visually.</p>
+<p><img class="wp-image-2897 size-full" alt="SSRS parameters as seen from Report Server" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/ssrs-parameters-1.png" width="826" height="252"></p>
+<p>Alternatively we can use <a href="http://sqlbelle.com/2015/07/26/discovering-ssrs-report-parameters-using-powershell/" target="_blank">PowerShell to discover the parameters</a> (which is what makes using PowerShell fun! Most of the tasks you want to do with SQL Server can be scripted!).</p>
+<p><img class="wp-image-2898 size-large" alt="Discovering SSRS Report Parameters using PowerShell" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/2015-08-15-11-26-51-am.png" width="860" height="207"></p>
+<p>One way to send the parameters to the script is through a <a href="https://technet.microsoft.com/en-us/library/ee692803.aspx" target="_blank">PowerShell hash table</a>. Notice too that we can pass the multivalue parameter as a string[].</p>
+<!-- HTML generated using hilite.me -->
+<div style="overflow: auto; border-top: gray 0.1em solid; border-right: gray 0.1em solid; width: auto; background: #ffffff; border-bottom: gray 0.1em solid; padding-bottom: 0.2em; padding-top: 0.2em; padding-left: 0.6em; border-left: gray 0.8em solid; padding-right: 0.6em">
+<pre style="margin: 0px; line-height: 125%">```powershell 
+<span style="color: #996633">$inputParams</span> = <span style="color: #ff0000; background-color: #ffaaaa">@</span>{ 
+<span style="background-color: #fff0f0">"CustomerID"</span> = 29982<span style="color: #ff0000; background-color: #ffaaaa">;</span> 
+<span style="background-color: #fff0f0">"LastName"</span> = <span style="background-color: #fff0f0">'Marple'</span><span style="color: #ff0000; background-color: #ffaaaa">;</span> 
+<span style="background-color: #fff0f0">"OnlineFlag"</span> = <span style="color: #996633">$false</span><span style="color: #ff0000; background-color: #ffaaaa">;</span> 
+<span style="background-color: #fff0f0">"MinTotalDue"</span> = 100.00<span style="color: #ff0000; background-color: #ffaaaa">;</span> 
+<span style="background-color: #fff0f0">"OrderDateFrom"</span> = <span style="background-color: #fff0f0">'01/01/2001'</span> 
+<span style="background-color: #fff0f0">"OrderDateTo"</span> = <span style="background-color: #fff0f0">'01/01/2006'</span> 
+<span style="background-color: #fff0f0">"Status"</span> = <span style="font-weight: bold; color: #003366">[string[]]</span>(<span style="background-color: #fff0f0">'Sent to Warehouse'</span>, <span style="background-color: #fff0f0">'Shipped'</span>) 
+}
+
+```</pre>
+</div>
+<p>Since there are multiple parameters, we will need to create an array of <a href="https://msdn.microsoft.com/en-us/library/microsoft.reporting.winforms.reportparameter.aspx" target="_blank">Report Parameters</a>. The number of items in the array can be derived from the hash table count:</p>
+<!-- HTML generated using hilite.me -->
+<div style="overflow: auto; border-top: gray 0.1em solid; border-right: gray 0.1em solid; width: auto; background: #ffffff; border-bottom: gray 0.1em solid; padding-bottom: 0.2em; padding-top: 0.2em; padding-left: 0.6em; border-left: gray 0.8em solid; padding-right: 0.6em">
+<pre style="margin: 0px; line-height: 125%">```powershell 
+<span style="color: #888888">#create an array based on how many incoming parameters </span>
+<span style="color: #996633">$params</span> = <span style="color: #007020">New-Object</span> <span style="background-color: #fff0f0">'Microsoft.Reporting.WinForms.ReportParameter[]'</span> <span style="color: #996633">$inputParams</span>.Count 
+```</pre>
+</div>
+<p>To populate, we can use a loop to get all the items from our hash table:</p>
+<!-- HTML generated using hilite.me -->
+<div style="overflow: auto; border-top: gray 0.1em solid; border-right: gray 0.1em solid; width: auto; background: #ffffff; border-bottom: gray 0.1em solid; padding-bottom: 0.2em; padding-top: 0.2em; padding-left: 0.6em; border-left: gray 0.8em solid; padding-right: 0.6em">
+<pre style="margin: 0px; line-height: 125%">```powershell 
+<span style="color: #996633">$i</span> = 0 
+<span style="font-weight: bold; color: #008800">foreach</span> (<span style="color: #996633">$p</span> <span style="font-weight: bold; color: #008800">in</span> <span style="color: #996633">$inputParams</span>.GetEnumerator()) 
+{ 
+<span style="color: #996633">$params</span>[<span style="color: #996633">$i</span>] = <span style="color: #007020">New-Object</span> Microsoft.Reporting.WinForms.ReportParameter(<span style="color: #996633">$p</span>.Name, <span style="color: #996633">$p</span>.Value, <span style="color: #996633">$false</span>) 
+<span style="color: #996633">$i</span>++ 
+} 
+```</pre>
+</div>
+<p>To set the parameters, we can use the SetParameters method:</p>
+<!-- HTML generated using hilite.me -->
+<div style="overflow: auto; border-top: gray 0.1em solid; border-right: gray 0.1em solid; width: auto; background: #ffffff; border-bottom: gray 0.1em solid; padding-bottom: 0.2em; padding-top: 0.2em; padding-left: 0.6em; border-left: gray 0.8em solid; padding-right: 0.6em">
+<pre style="margin: 0px; line-height: 125%">```powershell 
+<span style="color: #996633">$rv</span>.ServerReport.SetParameters(<span style="color: #996633">$params</span>) 
+```</pre>
+</div>
+<p>Once the parameters are set, we can start creating our PDF report. To do this, we will need to call the <a href="https://msdn.microsoft.com/en-us/library/ms252214.aspx" target="_blank">Render </a>method, which accepts parameters that define the output, including the format, device info, mime type, encoding etc. This is the syntax for <a href="https://msdn.microsoft.com/en-us/library/ms252214.aspx" target="_blank">Render</a>:</p>
+<p><a href="https://msdn.microsoft.com/en-us/library/ms252214.aspx"><img class="aligncenter size-full wp-image-2891" alt="ServerReport.Render" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/serverreport-render.png" width="367" height="255"></a></p>
+<p>Here is how we can set these parameters using PowerShell:</p>
+<!-- HTML generated using hilite.me -->
+<div style="overflow: auto; border-top: gray 0.1em solid; border-right: gray 0.1em solid; width: auto; background: #ffffff; border-bottom: gray 0.1em solid; padding-bottom: 0.2em; padding-top: 0.2em; padding-left: 0.6em; border-left: gray 0.8em solid; padding-right: 0.6em">
+<pre style="margin: 0px; line-height: 125%">```powershell 
+<span style="color: #996633">$mimeType</span> = <span style="color: #996633">$null</span> 
+<span style="color: #996633">$encoding</span> = <span style="color: #996633">$null</span> 
+<span style="color: #996633">$extension</span> = <span style="color: #996633">$null</span> 
+<span style="color: #996633">$streamids</span> = <span style="color: #996633">$null</span> 
+<span style="color: #996633">$warnings</span> = <span style="color: #996633">$null</span>
+
+<span style="color: #996633">$bytes</span> = <span style="color: #996633">$null</span> 
+<span style="color: #996633">$bytes</span> = <span style="color: #996633">$rv</span>.ServerReport.Render(<span style="background-color: #fff0f0">"PDF"</span>, 
+<span style="color: #996633">$null</span>, 
+<span style="font-weight: bold; color: #003366">[ref]</span> <span style="color: #996633">$mimeType</span>, 
+<span style="font-weight: bold; color: #003366">[ref]</span> <span style="color: #996633">$encoding</span>, 
+<span style="font-weight: bold; color: #003366">[ref]</span> <span style="color: #996633">$extension</span>, 
+<span style="font-weight: bold; color: #003366">[ref]</span> <span style="color: #996633">$streamids</span>, 
+<span style="font-weight: bold; color: #003366">[ref]</span> <span style="color: #996633">$warnings</span>) 
+```</pre>
+</div>
+<p>To save the report into a file, we can use the <a href="https://msdn.microsoft.com/en-us/library/system.io.filestream.aspx" target="_blank">System.IO.FileStream</a> class which has a <a href="https://msdn.microsoft.com/en-us/library/system.io.filestream.write.aspx" target="_blank">Write </a>method:</p>
+<!-- HTML generated using hilite.me -->
+<div style="overflow: auto; border-top: gray 0.1em solid; border-right: gray 0.1em solid; width: auto; background: #ffffff; border-bottom: gray 0.1em solid; padding-bottom: 0.2em; padding-top: 0.2em; padding-left: 0.6em; border-left: gray 0.8em solid; padding-right: 0.6em">
+<pre style="margin: 0px; line-height: 125%">```powershell 
+<span style="color: #996633">$fileName</span> = <span style="color: #996633">$baseFolder</span> + <span style="background-color: #fff0f0">"Sales Report.pdf"</span> 
+<span style="color: #996633">$fileStream</span> = <span style="color: #007020">New-Object</span> System.IO.FileStream(<span style="color: #996633">$fileName</span>, <span style="font-weight: bold; color: #003366">[System.IO.FileMode]</span><span style="color: #ff0000; background-color: #ffaaaa">::</span>OpenOrCreate) 
+<span style="color: #996633">$fileStream</span>.Write(<span style="color: #996633">$bytes</span>, 0, <span style="color: #996633">$bytes</span>.Length) 
+<span style="color: #996633">$fileStream</span>.Close()
+
+```</pre>
+</div>
+<p>Here is the complete script, with a few enhancements to record start time, end time, and duration:</p>
+<!-- HTML generated using hilite.me -->
+<div style="overflow: auto; border-top: gray 0.1em solid; border-right: gray 0.1em solid; width: auto; background: #ffffff; border-bottom: gray 0.1em solid; padding-bottom: 0.2em; padding-top: 0.2em; padding-left: 0.6em; border-left: gray 0.8em solid; padding-right: 0.6em">
+<pre style="margin: 0px; line-height: 125%">```powershell 
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #888888"># report parameters </span>
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #996633">$inputParams</span> = <span style="color: #ff0000; background-color: #ffaaaa">@</span>{ 
+<span style="background-color: #fff0f0">"CustomerID"</span> = 29982<span style="color: #ff0000; background-color: #ffaaaa">;</span> 
+<span style="background-color: #fff0f0">"LastName"</span> = <span style="background-color: #fff0f0">'Marple'</span><span style="color: #ff0000; background-color: #ffaaaa">;</span> 
+<span style="background-color: #fff0f0">"OnlineFlag"</span> = <span style="color: #996633">$false</span><span style="color: #ff0000; background-color: #ffaaaa">;</span> 
+<span style="background-color: #fff0f0">"MinTotalDue"</span> = 100.00<span style="color: #ff0000; background-color: #ffaaaa">;</span> 
+<span style="background-color: #fff0f0">"OrderDateFrom"</span> = <span style="background-color: #fff0f0">'01/01/2001'</span> 
+<span style="background-color: #fff0f0">"OrderDateTo"</span> = <span style="background-color: #fff0f0">'01/01/2006'</span> 
+<span style="background-color: #fff0f0">"Status"</span> = <span style="font-weight: bold; color: #003366">[string[]]</span>(<span style="background-color: #fff0f0">'Sent to Warehouse'</span>, <span style="background-color: #fff0f0">'Shipped'</span>) 
+}
+
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #888888"># add assembly </span>
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #007020">Add-Type</span> -AssemblyName <span style="background-color: #fff0f0">"Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"</span>
+
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #888888"># display calculated month end date </span>
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #996633">$startTime</span> = <span style="color: #007020">Get-Date</span> 
+<span style="color: #007020">Write-Host</span> (<span style="background-color: #fff0f0">"="</span> * 80) 
+<span style="color: #007020">Write-Host</span> <span style="background-color: #fff0f0">"Generating Sales Report"</span> 
+<span style="color: #007020">Write-Host</span> <span style="background-color: #fff0f0">"Start Time: $startTime"</span> 
+<span style="color: #007020">Write-Host</span> (<span style="background-color: #fff0f0">"="</span> * 80)
+
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #888888"># create timestamped folder </span>
+<span style="color: #888888"># where we will save our report </span>
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #996633">$dt</span> = <span style="color: #007020">Get-Date</span> -Format <span style="background-color: #fff0f0">"yyyy-MMM-dd hhmmtt"</span> 
+<span style="color: #996633">$baseFolder</span> = <span style="background-color: #fff0f0">"C:Sales Reports</span><span style="background-color: #eeeeee">$(</span><span style="color: #ff0000; background-color: #ffaaaa">$</span><span style="background-color: #eeeeee">dt)</span><span style="background-color: #fff0f0">"</span>
+
+<span style="color: #888888"># if the path exists, will error silently and continue </span>
+<span style="color: #007020">New-Item</span> -ItemType Directory -Path <span style="color: #996633">$baseFolder</span> -ErrorAction SilentlyContinue | <span style="color: #007020">Out-Null</span>
+
+<span style="color: #996633">$rv</span> = <span style="color: #007020">New-Object</span> Microsoft.Reporting.WinForms.ReportViewer
+
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #888888"># report Server Properties </span>
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #996633">$rv</span>.ServerReport.ReportServerUrl = <span style="background-color: #fff0f0">"http://localhost/ReportServer"</span> 
+<span style="color: #996633">$rv</span>.ServerReport.ReportPath = <span style="background-color: #fff0f0">"/Sales Reports/Sales Report"</span> 
+<span style="color: #996633">$rv</span>.ProcessingMode = <span style="background-color: #fff0f0">"Remote"</span>
+
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #888888"># set up report parameters </span>
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #996633">$params</span> = <span style="color: #996633">$null</span>
+
+<span style="color: #888888">#create an array based on how many incoming parameters </span>
+<span style="color: #996633">$params</span> = <span style="color: #007020">New-Object</span> <span style="background-color: #fff0f0">'Microsoft.Reporting.WinForms.ReportParameter[]'</span> <span style="color: #996633">$inputParams</span>.Count
+
+<span style="color: #996633">$i</span> = 0 
+<span style="font-weight: bold; color: #008800">foreach</span> (<span style="color: #996633">$p</span> <span style="font-weight: bold; color: #008800">in</span> <span style="color: #996633">$inputParams</span>.GetEnumerator()) 
+{ 
+<span style="color: #996633">$params</span>[<span style="color: #996633">$i</span>] = <span style="color: #007020">New-Object</span> Microsoft.Reporting.WinForms.ReportParameter(<span style="color: #996633">$p</span>.Name, <span style="color: #996633">$p</span>.Value, <span style="color: #996633">$false</span>) 
+<span style="color: #996633">$i</span>++ 
+} 
+<span style="color: #888888"># set the parameters </span>
+<span style="color: #996633">$rv</span>.ServerReport.SetParameters(<span style="color: #996633">$params</span>) 
+<span style="color: #996633">$rv</span>.ShowParameterPrompts = <span style="color: #996633">$false</span> 
+<span style="color: #996633">$rv</span>.RefreshReport() 
+<span style="color: #996633">$rv</span>.ServerReport.Refresh()
+
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #888888"># set rendering parameters </span>
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #996633">$mimeType</span> = <span style="color: #996633">$null</span> 
+<span style="color: #996633">$encoding</span> = <span style="color: #996633">$null</span> 
+<span style="color: #996633">$extension</span> = <span style="color: #996633">$null</span> 
+<span style="color: #996633">$streamids</span> = <span style="color: #996633">$null</span> 
+<span style="color: #996633">$warnings</span> = <span style="color: #996633">$null</span>
+
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #888888"># render the SSRS report in PDF </span>
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #996633">$bytes</span> = <span style="color: #996633">$null</span> 
+<span style="color: #996633">$bytes</span> = <span style="color: #996633">$rv</span>.ServerReport.Render(<span style="background-color: #fff0f0">"PDF"</span>, 
+<span style="color: #996633">$null</span>, 
+<span style="font-weight: bold; color: #003366">[ref]</span> <span style="color: #996633">$mimeType</span>, 
+<span style="font-weight: bold; color: #003366">[ref]</span> <span style="color: #996633">$encoding</span>, 
+<span style="font-weight: bold; color: #003366">[ref]</span> <span style="color: #996633">$extension</span>, 
+<span style="font-weight: bold; color: #003366">[ref]</span> <span style="color: #996633">$streamids</span>, 
+<span style="font-weight: bold; color: #003366">[ref]</span> <span style="color: #996633">$warnings</span>)
+
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #888888"># save the report to a file </span>
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #996633">$fileName</span> = <span style="color: #996633">$baseFolder</span> + <span style="background-color: #fff0f0">"Sales Report.pdf"</span> 
+<span style="color: #996633">$fileStream</span> = <span style="color: #007020">New-Object</span> System.IO.FileStream(<span style="color: #996633">$fileName</span>, <span style="font-weight: bold; color: #003366">[System.IO.FileMode]</span><span style="color: #ff0000; background-color: #ffaaaa">::</span>OpenOrCreate) 
+<span style="color: #996633">$fileStream</span>.Write(<span style="color: #996633">$bytes</span>, 0, <span style="color: #996633">$bytes</span>.Length) 
+<span style="color: #996633">$fileStream</span>.Close()
+
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #888888"># calculate end time and duration </span>
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #996633">$endTime</span> = <span style="color: #007020">Get-Date</span> 
+<span style="color: #996633">$duration</span> = <span style="color: #007020">New-TimeSpan</span> -Start <span style="color: #996633">$startTime</span> -End <span style="color: #996633">$endTime</span> 
+<span style="color: #007020">Write-Host</span> (<span style="background-color: #fff0f0">"="</span> * 80) 
+<span style="color: #007020">Write-Host</span> <span style="background-color: #fff0f0">"End Time: $endTime"</span> 
+<span style="color: #007020">Write-Host</span> <span style="background-color: #fff0f0">"Duration: $duration "</span> 
+<span style="color: #007020">Write-Host</span> (<span style="background-color: #fff0f0">"="</span> * 80)
+
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+<span style="color: #888888"># show folder </span>
+<span style="color: #888888">#-------------------------------------------------------------- </span>
+explorer <span style="color: #996633">$baseFolder</span>
+
+```</pre>
+</div>
+<p>When the script is done, it will show a result similar to below (just a good visual check of how long the process took), as well as open Windows explorer and show the generated report (I am lazy that way).</p>
+<p><img class="size-full wp-image-2934" alt="Using PowerShell to Generate SSRS Report - duration" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/using-powershell-to-generate-ssrs-report-duration.png" width="472" height="193"></p>
+<p>Where to go from here? This is just the basic script. This script can be wrapped in a function or module to make the code blocks easier to use and manage.</p>
+	</div><!-- .entry-content -->
+
+
+	<footer class="entry-footer single">
+					<div class="tags">
+				<span>Tags </span>
+				<span>
+					<a href="https://blogs.msdn.microsoft.com/cdndevs/tag/powershell/" rel="tag">Powershell</a> <a href="https://blogs.msdn.microsoft.com/cdndevs/tag/sql/" rel="tag">sql</a> <a href="https://blogs.msdn.microsoft.com/cdndevs/tag/sql-server/" rel="tag">SQL Server</a> <a href="https://blogs.msdn.microsoft.com/cdndevs/tag/ssrs/" rel="tag">ssrs</a>				</span>
+			</div>
+				<hr>
+	</footer><!-- .entry-footer -->
+
+</article><!-- #post-## -->
+
+			
+		</div><!-- #single-content -->
+
+		
+<div id="comments" class="comments-area">
+	<div class="comments-title">
+		Comments (0)	</div>
+
+					<div id="respond" class="comment-respond">
+			<h3 id="reply-title" class="comment-reply-title"> <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://blogs.msdn.microsoft.com/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/#respond" style="display:none;">Cancel reply</a></small></h3>				<form action="https://blogs.msdn.microsoft.com/cdndevs/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+					<p class="comment-form-comment"><textarea id="comment" name="comment" cols="45" rows="4" aria-required="true"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" aria-required="true" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" aria-required="true" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200"></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="22392" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="a2e3e5e77a"></p><p style="display: none;"></p>				<input type="hidden" id="ak_js" name="ak_js" value="1475608253558"></form>
+					</div><!-- #respond -->
+		
+	
+	
+</div><!-- .comments-area -->
+	</div><!-- #primary -->
+
+
+<div id="secondary" class="sidebar col-sm-3">
+	<div id="sidebar-widget-area" class="sidebar-widget-area" role="complementary">
+		<aside id="text-22" class="widget widget_text"><h2 class="widget-title">Pick of the Week</h2>			<div class="textwidget"><h1 style="font-size: 18px">
+    <a href="https://channel9.msdn.com/Shows/Visual-Studio-Toolbox/Getting-Started-with-Xamarin?wt.mc_id=DX_836218">Getting Started with Xamarin</a>
+    </h1>
+
+<iframe src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/player.html" width="250" height="auto" allowfullscreen="" frameborder="0">
+</iframe></div>
+		</aside><aside id="recent-comments-5" class="widget widget_recent_comments"><h2 class="widget-title">Tech Talk</h2><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link"><a href="https://social.msdn.microsoft.com/profile/Apurva+Thanky+%5BMSFT%5D" rel="external nofollow" class="url">Apurva Thanky [MSFT]</a></span> on <a href="https://blogs.msdn.microsoft.com/cdndevs/2015/07/20/uwp-new-controls-part-3-maps/#comment-34805">UWP: New Controls (part 3 – Maps)</a></li><li class="recentcomments"><span class="comment-author-link"><a href="https://social.msdn.microsoft.com/profile/Sergiy+Baydachnyy" rel="external nofollow" class="url">Sergiy Baydachnyy</a></span> on <a href="https://blogs.msdn.microsoft.com/cdndevs/2015/06/05/how-to-use-softwarebitmap-to-display-video-from-ez-b-controller/#comment-21285">How to use SoftwareBitmap to display video from EZ-B controller</a></li><li class="recentcomments"><span class="comment-author-link"><a href="http://sdit/" rel="external nofollow" class="url">kishan kuman</a></span> on <a href="https://blogs.msdn.microsoft.com/cdndevs/2015/08/14/intel-just-open-sourced-stephen-hawkings-speech-system-and-its-a-net-4-5-winforms-app-that-you-can-try-for-yourself/#comment-20535">Intel just open sourced Stephen Hawking’s speech system and it’s a .NET 4.5 WinForms app that you can try for yourself</a></li><li class="recentcomments"><span class="comment-author-link">Kumar</span> on <a href="https://blogs.msdn.microsoft.com/cdndevs/2016/01/24/visual-studio-code-and-local-web-server/#comment-19185">Visual Studio Code and local web server</a></li><li class="recentcomments"><span class="comment-author-link"><a href="http://www.sharpgis.net/" rel="external nofollow" class="url">dotMorten</a></span> on <a href="https://blogs.msdn.microsoft.com/cdndevs/2016/06/06/how-to-manage-alljoyn-devices-in-c-lifx-color-1000-example/#comment-19025">How to manage AllJoyn devices in C#: LIFX Color 1000 Example</a></li></ul></aside><aside id="text-4" class="widget widget_text"><h2 class="widget-title">Developer Events</h2>			<div class="textwidget"><div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe name="fb_xdm_frame_https" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" id="fb_xdm_frame_https" aria-hidden="true" title="Facebook Cross Domain Communication Frame" tabindex="-1" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/P5DLcu0KGJB.html" style="border: none;"></iframe></div></div><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div></div></div></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=135939140099239";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-page fb_iframe_widget" data-href="https://www.facebook.com/MicrosoftDeveloper.Canada" data-tabs="events, timeline" data-width="260" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" fb-xfbml-state="rendered" fb-iframe-plugin-query="adapt_container_width=true&amp;app_id=135939140099239&amp;container_width=225&amp;hide_cover=false&amp;href=https%3A%2F%2Fwww.facebook.com%2FMicrosoftDeveloper.Canada&amp;locale=en_US&amp;sdk=joey&amp;show_facepile=true&amp;small_header=true&amp;tabs=events%2C%20timeline&amp;width=260"><span style="vertical-align: bottom; width: 225px; height: 500px;"><iframe name="f33e23b468be32c" width="260px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:page Facebook Social Plugin" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/page.html" style="border: none; visibility: visible; width: 225px; height: 500px;" class=""></iframe></span></div></div>
+		</aside><aside id="sfmsb_settings-4" class="widget sfmsb_widget"><div class="sfmsb-follow-social-buttons sfmsb-under sfmsb-circle 40 sfmsb-horizontal"><h2 class="widget-title">Follow us</h2><a title="twitter" target="_blank" href="https://twitter.com/cdndevs"><span class="sfmsb-icon-twitter sfmsb-circle" style="color:#55acee;font-size:40px;" data-color="#55acee"></span></a><a title="facebook" target="_blank" href="https://www.facebook.com/MicrosoftDeveloper.Canada"><span class="sfmsb-icon-facebook sfmsb-circle" style="color:#3a5795;font-size:40px;" data-color="#3a5795"></span></a><a title="RSS Link" target="_blank" href="https://blogs.msdn.microsoft.com/cdndevs/feed/"><span class="sfmsb-icon-feed sfmsb-circle" style="color:#ffa500;font-size:40px;" data-color="#ffa500"></span></a><a title="github" target="_blank" href="https://github.com/microsoft/"><span class="sfmsb-icon-github sfmsb-circle" style="color:#101010;font-size:40px;" data-color="#101010"></span></a><div class="sfmsb-clearfix"></div></div></aside>	</div>
+</div><!-- #secondary -->
+</div><!-- .site-content -->
+
+<footer id="site-footer" class="site-footer row" role="contentinfo">
+	<div id="site-info" class="site-info">
+		<div id="footer-text" class="col-sm-4 col-sm-offset-6">
+			<span>
+				<a href="https://msdn.microsoft.com/dn529288">Privacy &amp; Cookies</a>
+			</span>
+			<span>
+				<a href="https://msdn.microsoft.com/cc300389">Terms of Use</a>
+			</span>
+			<span>
+				<a href="https://www.microsoft.com/en-us/legal/intellectualproperty/Trademarks/EN-US.aspx">Trademarks</a>
+			</span>
+		</div>
+		<div id="footer-far" class="col-sm-2">
+			<div id="footer-microsoft-logo">
+				<a href="https://www.microsoft.com/">
+					<img id="footer-microsoft-logo-svg" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/ms-logo-white-text.svg" alt="Microsoft logo">
+				</a>
+			</div>
+			<div id="copyright">
+				© 2016 Microsoft
+			</div>
+		</div>
+	</div><!-- .site-info -->
+</footer><!-- .site-footer -->
+
+</div><!-- .site -->
+
+	<script type="text/javascript">
+	jQuery(document).ready(function($){
+		$login_link = $( 'a[href*="wp-login.php?"]' );
+				$login_link.on( 'click', function( evt ) {
+			// evt.preventDefault();
+						// console.log( 'cookie-set', '/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/' );
+			$.cookie( 'aadsso-redirect', '/cdndevs/2015/10/14/automate-ssrs-report-generation-using-powershell/', { expires: 1, path: '/' });
+		});
+	});
+	</script>
+		<!--ADD WEDCS SCRIPT-->
+	<div id="_WEDCSInsertedData" style="display: none;"><iframe id="_msnFrame" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/c.html" style="z-index:-1;height:1px;width:1px;display:none;visibility:hidden;" onload="javascript:MscomBeacon();"></iframe></div>
+	<script type="text/javascript">
+		jQuery( window ).load(
+			function() {
+				window.varSegmentation = 0;
+				window.varClickTracking = 1;
+				window.varCustomerTracking = 1;
+				window.varAutoFirePV = 1;
+				window.Route = ""; // was 23470 in the windows theme framework
+				window.Ctrl = "";
+				var wedcs_script = document.createElement('script');
+				wedcs_script.type = 'text/javascript';
+				wedcs_script.async = true;
+				wedcs_script.src = 'https://blogs.msdn.microsoft.com/cdndevs/wp-content/mu-plugins/wedcs-script/ms2_blogs.js';
+				document.getElementsByTagName('body')[0].appendChild(wedcs_script);
+			});
+	</script>
+	<!--
+	<script src="//c.microsoft.com/ms.js" type="text/javascript"></script>
+	<noscript><img alt="" width="1" height="1" src="http://c.microsoft.com/trans_pixel.aspx"/></noscript>
+	-->
+		<script type="text/javascript">
+			jQuery( window ).load(
+				function () {
+					var stylesheet = document.createElement('link');
+					stylesheet.href = 'https://blogs.msdn.microsoft.com/cdndevs/wp-content/plugins/simple-follow-me-social-buttons-widget/assets/css/style.css?ver=3.3.3';
+					stylesheet.rel = 'stylesheet';
+					stylesheet.type = 'text/css';
+					document.getElementsByTagName('head')[0].appendChild(stylesheet);
+				});
+		</script>
+				<script type="text/javascript">
+			jQuery( window ).load(
+				function () {
+					var stylesheet = document.createElement('link');
+					stylesheet.href = 'https://blogs.msdn.microsoft.com/cdndevs/wp-content/plugins/simple-follow-me-social-buttons-widget/assets/css/icons.css?ver=3.3.3';
+					stylesheet.rel = 'stylesheet';
+					stylesheet.type = 'text/css';
+					document.getElementsByTagName('head')[0].appendChild(stylesheet);
+				});
+		</script>
+				<script type="text/javascript">
+			jQuery( window ).load(
+				function () {
+					var script = document.createElement('script');
+					script.src = 'https://blogs.msdn.microsoft.com/cdndevs/wp-content/plugins/simple-follow-me-social-buttons-widget/assets/js/front-widget.js?ver=3.3.3';
+					script.type = 'text/javascript';
+					script.async = true;
+					document.getElementsByTagName('body')[0].appendChild(script);
+				});
+		</script>
+		
+		<span id="page-view-tracking-info" blog-id="15" post-id="22392"></span>
+		<script type="text/javascript">
+			// Check for compatibility before IE8
+			if (!Date.now) {
+ 				 Date.now = function() { return new Date().getTime(); };
+			}
+			jQuery( window ).load( function() {
+				jQuery.ajax({
+					url: 'https://blogs.msdn.microsoft.com/cdndevs/wp-admin/admin-ajax.php',
+					type: 'get',
+					data: {
+						action: 'track_page_view',
+						track_page_view_post_id: jQuery('#page-view-tracking-info').attr('post-id'),
+						track_page_view_blog_id: jQuery('#page-view-tracking-info').attr('blog-id'),
+						track_page_view_post_url: window.location.href.split('?')[0],
+						timestamp: Date.now()
+						}
+				});
+			});
+		</script>
+<script>
+dataLayer = [[]];
+</script>
+<!-- Google Tag Manager -->
+<noscript>&lt;iframe src="//www.googletagmanager.com/ns.html?id=GTM-PLR87W" height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;</noscript>
+<script>$(window).load(function(){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PLR87W')});
+</script>
+<!-- End Google Tag Manager -->
+<script type="text/javascript" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/form.js.download"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var wds_ratings_config = {"ajaxurl":"https:\/\/blogs.msdn.microsoft.com\/cdndevs\/wp-admin\/admin-ajax.php","user_id":"0","nonce":"637a934994","debug":"","no_auth_alert":"You must be logged in to rate an article."};
+var wds_ratings_config = {"ajaxurl":"https:\/\/blogs.msdn.microsoft.com\/cdndevs\/wp-admin\/admin-ajax.php","user_id":"0","nonce":"637a934994","debug":"","no_auth_alert":"You must be logged in to rate an article."};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/wds-ratings.js.download"></script>
+<script type="text/javascript" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/jquery-migrate.min.js.download"></script>
+<script type="text/javascript" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/theme-merged.js.download"></script>
+<script type="text/javascript" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/wp-embed.min.js.download"></script>
+<script type="text/javascript" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/jquery.cookie.js.download"></script>
+
+
+
+<script type="text/javascript" async="" src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/ms2_blogs.js.download"></script><script src="./Automate SSRS Report Generation using PowerShell – Canadian Developer Connection_files/front-widget.js.download" type="text/javascript" async=""></script></body></html>

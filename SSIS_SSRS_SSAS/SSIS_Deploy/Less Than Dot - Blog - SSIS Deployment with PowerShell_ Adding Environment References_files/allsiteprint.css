@@ -1,0 +1,242 @@
+/* Common Elements */
+body {
+	font: 10pt Verdana, Arial;
+	background-color: white;
+	color: black;
+
+}
+
+h1, h2, h3, .pgsttl{
+	/*font-family: times, georgia;*/
+	font-weight: normal;
+	padding-bottom: .1em
+}
+
+a {
+	content: " (" attr(href) ") ";
+   	color: blue;
+	text-decoration:none;
+}
+
+blockquote{
+	background-color:#EaF2De;
+	border: 1px dashed #6A755E;
+	margin: .5em 1em;
+	padding: 1em;
+}
+
+/* LTD Container */
+#contain{
+	
+}
+
+#subcontain{
+	border: 1px solid #666666;
+	margin: .5em 10px;
+}
+
+/* LTD Header section */
+#hdr{
+	position: relative;
+	padding: .5em;
+/*	margin-top: .5em;*/
+}
+#logoc{
+	position: absolute;
+	top: 15px;
+	left: 10px;
+	text-align: center;
+	height: 69px;
+	padding-left: 3px;
+	/*background-color: #3E3E3E;*/
+}
+
+#ttl #snav{
+	display: none;
+}
+
+#nav{ 
+	display: none;
+}
+
+#content{
+	width: 100%;
+	padding: 1em 0em 1em 0em;
+	font-size: 9pt;
+	font-family: verdana;
+	background-color: white;
+}
+.evo_post_text img{
+	/*max-width: 940px;*/
+}
+
+p{
+	line-height: 1.5em;
+	margin: .5em 0;
+}
+
+/* Site About Box */
+#fa{
+	display: none;
+	
+}
+#fac{
+	display: none;
+}
+
+/* Right sidebar */
+#rtside{
+	display: none;
+	margin: 0;	
+}
+
+/* Left sidebar */
+#lftside{
+	margin: 0;	
+}
+
+/* Blog Posts */
+.bp, .bauthor, .lgform{ 
+	margin: 2em;
+}
+
+.intro, .evo_post_text{
+	padding-top: 1em;
+	line-height: 1.3em;
+	font-size: 1.1em;
+}
+.intro img{
+	max-height: 240px;
+	max-width: 200px;
+}
+.intro h1, .intro h2{
+	font-size: 14pt !important;
+}
+.intro h3{
+	font-size: 10pt !important;
+	font-weight: bold !important;
+}
+.cnt{
+	display: none;
+}
+
+#pname{
+	font-size: 14pt;
+	margin-top: 0px;
+}
+#pname a{
+	text-decoration: underline;
+}
+.bp h1, .bp h1 a, #pname a{
+	font-size: 1.35em;
+	color: #333333;
+	text-decoration: none;
+}
+.bp h1 a:hover, #pname a:hover{
+	text-decoration: underline;
+	color: #C04623;
+}
+.ttl .byl, #actfrm li, .postbody .author{
+	color: #6a755e;
+}
+.ttl .byl a{
+	color: #515847;
+	text-decoration: underline;
+}
+.ttl .byl a:hover{
+	text-decoration: none;
+}
+.bp a:hover{}
+.tagl{
+	display: none;
+}
+.socbtn{
+	margin-left: 10px;
+}
+.rm{
+	margin-top: 4px;
+	margin-left: 40px;
+	display: block;
+	width: 100px;
+}
+.author li{
+	margin-left: 2em;
+}
+
+/* Footer */
+#page-footer{
+	display: none;
+}
+
+
+.lgform label{
+	float: left;
+	width: 10em;
+	display: inline-block;
+	text-align: right;
+	margin-right: .5em;
+}
+.lgform textarea{
+	width: 70%;
+}
+.lgform .indent{
+	margin-left: 9.5em;
+}
+ .lgform .textarea_note{
+	margin-left: 10.5em;
+ }
+.lgform label img{
+	margin-right: 4px;
+}
+.lgform .innerform{
+	margin-left: 1em;
+	margin-bottom: 1em;
+	border: 1px solid #dddddd;
+	padding: 1em;
+}
+.fakeInput{
+	width: 150px;
+	display: inline-block;
+	font-size: 1em !important;
+	background-color: #ffffff;
+	vertical-align: middle;
+	border:1px solid #d9e5c9;
+	padding: 2px;
+}
+.socInput{
+	width: 200px;
+}
+
+.userInfo{
+	border: 1px solid #dddddd;
+	background-color: #eeeeee;
+	padding: .5em;
+	/* max-width: 650px; */
+	line-height: 1.5em;
+}
+.bioPic{
+	max-width: 80px;
+	float: left;
+	margin: .5em .5em .5em 0em;
+}
+.bioSoc{
+	font-size: .8em;
+	color: #999999;
+	padding-top: .25em;
+	margin-top: .25em;
+	border-top: 1px dashed #cccccc;
+}
+.bioSocTitle{
+	float: left;
+	margin-right: .5em;
+}
+.bioSocLink{}
+.bioSocLink img{
+	height: 24px;
+}
+
+.prevnext_post, .evo_post_foot, .leave_a_comment, .evo_edit 
+{
+	display: none;
+}
+

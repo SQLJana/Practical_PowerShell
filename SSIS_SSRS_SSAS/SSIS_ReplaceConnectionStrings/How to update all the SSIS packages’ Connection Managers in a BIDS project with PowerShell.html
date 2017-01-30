@@ -1,0 +1,336 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0120)http://weblogs.sqlteam.com/lucaz/archive/2012/06/05/how-to-update-all-the-ssis-packagesrsquo-connection-managers-in.aspx -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>
+	How to update all the SSIS packages’ Connection Managers in a BIDS project with PowerShell
+</title><link rel="SHORTCUT ICON" href="http://static2.sqlteamx.com/images/favicon.ico">
+<meta content="en-us" http-equiv="content-language">
+<meta content="Luca Zavarella" name="author">
+<meta content="Free rein to my curiosity about SQL Server" name="description">
+<meta content="sql server, ssis, ssas, ssrs, ssms, database, engine, business intelligence, bi, oltp, olap, cube, multidimensional, relational, modeling, t-sql, sql" name="keywords">
+<meta name="author" content="Luca Zavarella">
+<meta name="Generator" content="Subtext Version 2.5.1.0">
+<link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://feeds.feedburner.com/TheSqlServerSideOfMeen-us">
+<link type="text/css" rel="stylesheet" href="./How to update all the SSIS packages’ Connection Managers in a BIDS project with PowerShell_files/css.axd">
+<link id="CustomCss" type="text/css" rel="stylesheet" href="./How to update all the SSIS packages’ Connection Managers in a BIDS project with PowerShell_files/customcss.aspx"><link id="Rsd" rel="EditURI" type="application/rsd+xml" title="RSD" href="http://weblogs.sqlteam.com/lucaz/rsd.xml.ashx"><link id="wlwmanifest" rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://weblogs.sqlteam.com/lucaz/wlwmanifest.xml.ashx"><link id="opensearch" rel="search" type="application/opensearchdescription+xml" href="http://weblogs.sqlteam.com/lucaz/opensearchdesc.xml.ashx" title="The SQL Server Side of Me (en-us)">
+		<script type="text/javascript" src="./How to update all the SSIS packages’ Connection Managers in a BIDS project with PowerShell_files/jquery.min.js.download"></script>
+		<script type="text/javascript" src="./How to update all the SSIS packages’ Connection Managers in a BIDS project with PowerShell_files/common.js.download"></script>
+		<script type="text/javascript">
+			var subtextAllowedHtmlTags = ['a', 'b', 'strong', 'blockquote', 'p', 'i', 'em', 'u', 'strike', 'super', 'sub', 'code'];
+		</script>
+		</head>
+	<body>
+		<form name="Form1" method="post" action="http://weblogs.sqlteam.com/lucaz/archive/2012/06/05/how-to-update-all-the-ssis-packagesrsquo-connection-managers-in.aspx" id="Form1">
+<div>
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__VIEWSTATE" id="
+__VIEWSTATE" value="">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['Form1'];
+if (!theForm) {
+    theForm = document.Form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="./How to update all the SSIS packages’ Connection Managers in a BIDS project with PowerShell_files/WebResource.axd" type="text/javascript"></script>
+
+
+<script src="./How to update all the SSIS packages’ Connection Managers in a BIDS project with PowerShell_files/ScriptResource.axd" type="text/javascript"></script>
+<script src="./How to update all the SSIS packages’ Connection Managers in a BIDS project with PowerShell_files/ScriptResource(1).axd" type="text/javascript"></script>
+<div>
+
+	<input type="hidden" name="__SCROLLPOSITIONX" id="__SCROLLPOSITIONX" value="0">
+	<input type="hidden" name="__SCROLLPOSITIONY" id="__SCROLLPOSITIONY" value="0">
+</div>
+            <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('SubtextScriptManager', document.getElementById('Form1'));
+Sys.WebForms.PageRequestManager.getInstance()._updateControls(['tcommentsUpdatePanelWrapper'], [], [], 90);
+//]]>
+</script>
+
+			
+
+<div id="page">
+
+
+    
+	
+    <div id="header">
+    <div id="headerimg">
+    <h1><a id="Header1_HeaderTitle" title="The Title Of This Blog." href="http://weblogs.sqlteam.com/lucaz/">The SQL Server Side of Me (en-us)</a></h1>
+    <div id="description"></div>
+    </div>
+    
+    </div>
+    
+
+
+        
+
+
+    
+    	<ul class="menu" id="pagebar">  	
+        	<li class="page_item current_page_item"><a id="MyLinks1_HomeLink" title="Link to the home page." class="Home" href="http://weblogs.sqlteam.com/lucaz/">Home</a></li>
+		    <li class="page_item"></li>
+		    <li class="page_item"><a id="MyLinks1_ContactLink" title="Contact form." class="Contact" href="http://weblogs.sqlteam.com/lucaz/contact.aspx">Contact</a></li>
+	        <li class="page_item"><a id="MyLinks1_Syndication" title="Subscribe to this feed." class="Syndication" href="http://feeds.feedburner.com/TheSqlServerSideOfMeen-us">Syndication</a></li>		
+            <li class="page_item"><a id="MyLinks1_Admin" title="Login Form." class="Admin" href="http://weblogs.sqlteam.com/lucaz/login.aspx">Login</a></li>
+  		</ul>
+
+        <div id="grad"></div>
+
+  
+ 
+
+
+    <div id="content">
+
+		
+					
+
+
+<div class="post type-post hentry">
+<h2><a id="ctl09_TitleUrl" title="Title of this entry." href="http://weblogs.sqlteam.com/lucaz/archive/2012/06/05/how-to-update-all-the-ssis-packagesrsquo-connection-managers-in.aspx">How to update all the SSIS packages’ Connection Managers in a BIDS project with PowerShell</a>  <a id="ctl09_editInWlwLink"></a></h2>
+		 	
+           
+          
+        
+      
+
+	    <div class="entry">
+		<p>During the development of a BI solution, we all know that 80% of the time is spent during the ETL (Extract, Transform, Load) phase. If you use the BI Stack Tool provided by Microsoft SQL Server, this step is accomplished by the development of n Integration Services (SSIS) packages. In general, the number of packages made ​​in the ETL phase for a non-trivial solution of BI is quite significant.</p>  <p>An SSIS package, therefore, extracts data from a source, it "hammers" :) the data and then transfers it to a specific destination. Very often it happens that the connection to the source data is the same for all packages. Using Integration Services, this results in having the same Connection Manager (perhaps with the same name) for all packages:</p>  <p><img src="./How to update all the SSIS packages’ Connection Managers in a BIDS project with PowerShell_files/ETL_01.png"></p>  <p>The source data of my BI solution comes from an Helper database (HLP), then, for each package tha import this data, I have the <em>HLP Connection Manager</em> (the use of a <em>Shared Data Source </em>is not recommended, because the Connection String is wired and therefore you have to open the SSIS project and use the proper wizard change it...). In order to change the HLP Connection String at runtime, we could use the <em><a href="http://msdn.microsoft.com/en-us/library/ms141682.aspx" target="_blank">Package Configuration</a></em>, or we could run our packages with <a href="http://dtloggedexec.davidemauri.it/" target="_blank"><em>DTLoggedExec</em></a> by Davide Mauri (a must-have if you are developing with SQL Server 2005/2008). But my need was to change all the HLP connections in all packages <strong>within the SSIS Visual Studio project</strong>, because I had to version them through <em>Team Foundation Server </em>(TFS).</p>  <p>A good scribe with a lot of patience should have changed by hand all the connections by double-clicking the HLP Connection Manager of each package, and then changing the referenced server/database:</p>  <p><img src="./How to update all the SSIS packages’ Connection Managers in a BIDS project with PowerShell_files/ETL_02.png" width="406" height="419"></p>  <p>Not being endowed with such virtues :) I took just a little of time to write a small script in PowerShell, using the fact that a SSIS package (a <em>.dtsx</em> file) is nothing but an <em>xml</em> file, and therefore can be changed quite easily. I'm not a guru of PowerShell, but I managed more or less to put together the following lines of code:</p>  <blockquote>   <p><em>$LeftDelimiterString = "Initial Catalog="        <br>$RightDelimiterString = ";Provider="         <br>$ToBeReplacedString = "AstarteToBeReplaced"         <br>$ReplacingString = "AstarteReplacing"         <br>$MainFolder = "C:\MySSISPackagesFolder"</em></p>    <p><em>$files = <b>get-childitem</b> "$MainFolder" *.dtsx </em><em><b>`          <br></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | <b>Where-Object</b> {!($_.PSIsContainer)}</em></p>    <p><em>foreach ($file in $files)        <br>{         <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (<b>Get-Content</b> $file.FullName) </em><em><b>`          <br></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | <b>%</b> {$_ -replace "($LeftDelimiterString)($ToBeReplacedString)($RightDelimiterString)", "`$1$ReplacingString`$3"} </em><em><b>`          <br></b>| <b>Set-Content</b> $file.FullName;         <br>}</em></p> </blockquote>  <p>The script above just opens any SSIS package (<em>.dtsx</em>) in the supplied folder, then for each of them goes in search of the following text:</p>  <blockquote>   <p><em>Initial Catalog=AstarteToBeReplaced;Provider=</em></p> </blockquote>  <p>and it replaces the text found with this:</p>  <blockquote>   <p><em>Initial Catalog=AstarteReplacing;Provider=</em></p> </blockquote>  <p>I don’t enter into the details of each cmdlet used. I leave the reader to search for these details.</p>  <p>Alternatively, you can use a specific object model exposed in some .NET assemblies provided by Integration Services, or you can use the <strong><a href="http://www.codeplex.com/pacman" target="_blank">Pacman</a></strong> utility:</p>  <p><img src="./How to update all the SSIS packages’ Connection Managers in a BIDS project with PowerShell_files/IC203350.jpg"></p>  <p>Enjoy! :)</p>  <p><strong>P.S.</strong> Using TFS as versioning system, before running the script I <em>checked out</em> the packages and, after the script executed succesfully, I <em>checked in</em> them.</p></div>
+		
+<div class="share">
+	<span class="shareIcon">Share this Post: </span>
+	<ul>
+		<li>
+			<a href="mailto:?body=Thought+you+would+find+this+interesting.+http%3a%2f%2fweblogs.sqlteam.com%2flucaz%2farchive%2f2012%2f06%2f05%2fhow-to-update-all-the-ssis-packagesrsquo-connection-managers-in.aspx&amp;subject=How+to+update+all+the+SSIS+packages%26rsquo%3b+Connection+Managers+in+a+BIDS+project+with+PowerShell" title="Email it">email it</a>
+		</li>
+		<li>
+			<a href="http://del.icio.us/login?url=http%3a%2f%2fweblogs.sqlteam.com%2flucaz%2farchive%2f2012%2f06%2f05%2fhow-to-update-all-the-ssis-packagesrsquo-connection-managers-in.aspx;title=How+to+update+all+the+SSIS+packages%26rsquo%3b+Connection+Managers+in+a+BIDS+project+with+PowerShell" title="Bookmark it at del.icio.us">bookmark It</a>
+		</li>
+		<li>
+			<a href="http://digg.com/submit?url=http%3a%2f%2fweblogs.sqlteam.com%2flucaz%2farchive%2f2012%2f06%2f05%2fhow-to-update-all-the-ssis-packagesrsquo-connection-managers-in.aspx&amp;phase=2" title="digg it">digg It</a>
+		</li>
+		<li>
+			<a href="http://www.dotnetkicks.com/submit/?url=http%3a%2f%2fweblogs.sqlteam.com%2flucaz%2farchive%2f2012%2f06%2f05%2fhow-to-update-all-the-ssis-packagesrsquo-connection-managers-in.aspx&amp;title=How+to+update+all+the+SSIS+packages%26rsquo%3b+Connection+Managers+in+a+BIDS+project+with+PowerShell" title="kick it">kick It</a>
+		</li>
+	</ul>
+</div>
+
+        <div class="postmetadata">
+			    
+                <p class="infos">You can <a href="http://weblogs.sqlteam.com/lucaz/archive/2012/06/05/how-to-update-all-the-ssis-packagesrsquo-connection-managers-in.aspx#respond">leave a response</a>.</p>
+				</div>
+
+	
+		
+	
+
+		<link rel="pingback" href="http://weblogs.sqlteam.com/lucaz/Services/Pingback.aspx">
+		<!--
+   <rdf:RDF 
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+
+      <rdf:Description
+         rdf:about="http://weblogs.sqlteam.com/lucaz/archive/2012/06/05/how-to-update-all-the-ssis-packagesrsquo-connection-managers-in.aspx"
+         dc:identifier="http://weblogs.sqlteam.com/lucaz/archive/2012/06/05/how-to-update-all-the-ssis-packagesrsquo-connection-managers-in.aspx"
+         dc:title="How to update all the SSIS packages&rsquo; Connection Managers in a BIDS project with PowerShell"
+         trackback:ping="/lucaz/services/trackbacks/61417.aspx" 
+      />
+   </rdf:RDF>
+-->
+</div>
+
+<div id="commentsUpdatePanelWrapper">
+	<div class="commentsClosedMessage"><span style="font-style: italic;">Comments have been closed on this topic.</span></div>
+</div>
+				
+    </div>
+   
+        <div id="sidebar">
+
+       <ul><li>   
+		
+			
+        </li><li>				
+                <h2 class="sb-title widgettitle">Recent Posts</h2>
+                <ul>
+		
+				<li><a id="RecentPosts1_postList_ctl01_Link" title="Blog Entry." href="http://weblogs.sqlteam.com/lucaz/archive/2012/06/12/how-to-use-a-list-of-values-in-excel-as-filter-in-a-query.aspx">How to use a list of values in Excel as filter in a query</a></li>
+		
+				<li><a id="RecentPosts1_postList_ctl02_Link" title="Blog Entry." href="http://weblogs.sqlteam.com/lucaz/archive/2012/06/05/how-to-update-all-the-ssis-packagesrsquo-connection-managers-in.aspx">How to update all the SSIS packages’ Connection Managers in a BIDS project with PowerShell</a></li>
+		
+				<li><a id="RecentPosts1_postList_ctl03_Link" title="Blog Entry." href="http://weblogs.sqlteam.com/lucaz/archive/2012/04/02/bids-helper-1-6-beta-released.aspx">BIDS Helper 1.6 Beta released!</a></li>
+		
+				<li><a id="RecentPosts1_postList_ctl04_Link" title="Blog Entry." href="http://weblogs.sqlteam.com/lucaz/archive/2012/02/06/new-release-of-quotolap-pivottable-extensionsquot.aspx">New release of "OLAP PivotTable Extensions"</a></li>
+		
+				<li><a id="RecentPosts1_postList_ctl05_Link" title="Blog Entry." href="http://weblogs.sqlteam.com/lucaz/archive/2012/02/02/how-to-import-in-bids-more-than-one-ssis-package.aspx">How to import in BIDS more than one SSIS package in one shot!</a></li>
+		
+				</ul></li>
+		
+
+
+
+		
+
+<li>
+						
+                <h2 class="sb-title widgettitle">Recent Comments</h2>
+                <ul>
+		
+				<li>lucazav said <br><a id="RecentComments1_feedList_ctl01_Link" title="Reader Comment." href="http://weblogs.sqlteam.com/lucaz/archive/2012/06/12/how-to-use-a-list-of-values-in-excel-as-filter-in-a-query.aspx#53529">Nice trick, Gil! Thank you for sharing that.</a></li>
+		
+				<li>Gil said <br><a id="RecentComments1_feedList_ctl02_Link" title="Reader Comment." href="http://weblogs.sqlteam.com/lucaz/archive/2012/06/12/how-to-use-a-list-of-values-in-excel-as-filter-in-a-query.aspx#53497">I usually just select the list and hit control-H a...</a></li>
+		
+				<li>lucazav said <br><a id="RecentComments1_feedList_ctl03_Link" title="Reader Comment." href="http://weblogs.sqlteam.com/lucaz/archive/2012/06/12/how-to-use-a-list-of-values-in-excel-as-filter-in-a-query.aspx#53467">@Frank HellThank you for your suggestion.Be aware ...</a></li>
+		
+				<li>Frank Hell said <br><a id="RecentComments1_feedList_ctl04_Link" title="Reader Comment." href="http://weblogs.sqlteam.com/lucaz/archive/2012/06/12/how-to-use-a-list-of-values-in-excel-as-filter-in-a-query.aspx#53464">WHILE loop?Ugly! Have you ever thought about set b...</a></li>
+		
+				<li>lucazav said <br><a id="RecentComments1_feedList_ctl05_Link" title="Reader Comment." href="http://weblogs.sqlteam.com/lucaz/archive/2011/08/29/running-your-ssms-client-as-a-domain-user.aspx#52427">Hi Sekhar,I suppose the path &amp;quot;C:\Program ...</a></li>
+		
+				</ul>
+		
+</li>
+		
+		
+  <br>
+ <h2 class="sb-title widgettitle">Archives  </h2>              
+		         
+			
+					<ul>
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl01_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/archive/2012/06.aspx">June, 2012 (2)</a></li>
+					
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl02_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/archive/2012/04.aspx">April, 2012 (1)</a></li>
+					
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl03_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/archive/2012/02.aspx">February, 2012 (2)</a></li>
+					
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl04_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/archive/2011/12.aspx">December, 2011 (1)</a></li>
+					
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl05_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/archive/2011/11.aspx">November, 2011 (1)</a></li>
+					
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl06_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/archive/2011/08.aspx">August, 2011 (3)</a></li>
+					
+				
+					</ul>
+				
+	
+	
+  <br>
+ <h2 class="sb-title widgettitle">Post Categories  </h2>              
+		         
+			
+					<ul>
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl01_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/category/359.aspx">database theory</a></li>
+					
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl02_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/category/360.aspx">SSMS</a></li>
+					
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl03_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/category/361.aspx">SSMS add-ons</a></li>
+					
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl04_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/category/362.aspx">SSIS</a></li>
+					
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl05_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/category/363.aspx">OLAP on Excel</a></li>
+					
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl06_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/category/364.aspx">SSAS</a></li>
+					
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl07_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/category/367.aspx">T-SQL</a></li>
+					
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl08_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/category/368.aspx">Excel</a></li>
+					
+				
+					<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl09_Link" title="" rel="" href="http://weblogs.sqlteam.com/lucaz/category/369.aspx">Array</a></li>
+					
+				
+					</ul>
+				
+	
+	
+
+
+		
+        
+	<h2 class="sb-title widgettitle">Blog Stats</h2>
+    <ul>
+    <li>Posts : 10</li>
+    <li>Comments : 22</li>
+    <li>Trackbacks : 0</li>
+
+    </ul>
+      
+        
+        </ul>   
+</div>
+	
+		
+
+<div id="footer">
+
+<p>© 2016 Luca Zavarella
+<br>Converted to subtext by 
+<a href="http://www.siphilp.co.uk/" rel="external" title="Skin converted by Simon Philp">Simon Philp</a> 
+  <br>
+  
+	Theme: <a href="http://www.raven.za.net/wp-themes/contempt">Contempt</a> , was designed 
+		 by <a href="http://www.raven.za.net/">fx</a> and makes use of code/images by: <a href="http://binarybonsai.com/kubrick/">Michael Heilemann</a>.
+	</p>
+</div>
+
+
+
+
+
+</div>
+
+
+		
+
+<script type="text/javascript">
+//<![CDATA[
+document.getElementById('Form1').action = window.location.href;
+Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function() {
+  document.getElementById('Form1').action = window.location.href;
+});
+
+theForm.oldSubmit = theForm.submit;
+theForm.submit = WebForm_SaveScrollPositionSubmit;
+
+theForm.oldOnSubmit = theForm.onsubmit;
+theForm.onsubmit = WebForm_SaveScrollPositionOnSubmit;
+Sys.Application.initialize();
+//]]>
+</script>
+</form>
+	    
+	    <div id="stylesheetTest"></div>
+	
+
+</body></html>

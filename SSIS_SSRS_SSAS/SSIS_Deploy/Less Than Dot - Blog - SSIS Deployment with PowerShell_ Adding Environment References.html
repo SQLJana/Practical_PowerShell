@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<!-- saved from url=(0112)http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/ -->
+<html lang="en-US"><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="shortcut icon" href="http://lessthandot.com/favicon.ico" type="image/vnd.microsoft.icon">
+	<title>Less Than Dot - Blog -   SSIS Deployment with PowerShell: Adding Environment References</title>
+	<meta prefix="og: http://ogp.me/ns#" property="og:title" content="Less Than Dot - Blog -   SSIS Deployment with PowerShell: Adding Environment References">
+	<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article">
+	<meta prefix="og: http://ogp.me/ns#" property="og:url" content="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/">
+		<meta prefix="og: http://ogp.me/ns#" property="og:image" content="http://lessthandot.com/images/logo_prod.png">
+	<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article">
+	<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="LessThanDot">
+	<meta prefix="og: http://ogp.me/ns#" property="og:description" content="This blog post explains how you can add environment references in a PowerShell deployment script for SSIS 2012.">
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://blogs.lessthandot.com/index.php/feed/">
+	<link rel="alternate" type="application/atom+xml" title="Atom" href="http://blogs.lessthandot.com/index.php/feed/atom/">
+
+	<!-- this page is the canonical URL -->	
+	<link rel="stylesheet" href="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/style.css" type="text/css">
+	<link rel="stylesheet" href="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/allsite.css" type="text/css">
+	<link rel="stylesheet" href="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/allsiteprint.css" media="print" type="text/css">
+
+	<script src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/cb=gapi.loaded_1" async=""></script><script src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/cb=gapi.loaded_0" async=""></script><script type="text/javascript" async="" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/ga.js.download"></script><script src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/ca-pub-4420276351760122.js.download"></script><script id="twitter-wjs" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/widgets.js.download"></script><script type="text/javascript">function fbs_click(u,t) {window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&amp;t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}</script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<link rel="alternate" type="application/rss+xml" title="LessthanDot » SSIS Deployment with PowerShell: Adding Environment References Comments Feed" href="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/feed/">
+<link rel="stylesheet" id="bwp-syntax-css" href="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bwp-syntax-global.css" type="text/css" media="all">
+<script type="text/javascript" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/jquery.js.download"></script>
+<script type="text/javascript" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/jquery-migrate.min.js.download"></script>
+<script type="text/javascript" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bwp-syntax.js.download"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blogs.lessthandot.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://blogs.lessthandot.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="August 2013 PASSMN Meeting" href="http://blogs.lessthandot.com/index.php/itprofessionals/professionaldevelopment/august-2013-passmn-meeting/">
+<link rel="next" title="Technical nepotism…do you suffer from it?" href="http://blogs.lessthandot.com/index.php/itprofessionals/itprocesses/technical-nepotism-do-you-suffer/">
+<meta name="generator" content="WordPress 3.9">
+<link rel="canonical" href="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/">
+<link rel="shortlink" href="http://blogs.lessthandot.com/?p=2146">
+	<script src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/allsite.js.download" type="text/javascript"></script>
+<script src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/secureAnonymousFramework"></script><script type="text/javascript" charset="utf-8" async="" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/button.c9025956238e7d486d74379e14f50282.js.download"></script><style type="text/css">* html #li_ui_li_gen_1475607795731_0 a#li_ui_li_gen_1475607795731_0-link{height:1% !important;}#li_ui_li_gen_1475607795731_0{position:relative !important;overflow:visible !important;display:block !important;}#li_ui_li_gen_1475607795731_0 span{-webkit-box-sizing:content-box !important;-moz-box-sizing:content-box !important;box-sizing:content-box !important;}#li_ui_li_gen_1475607795731_0 a#li_ui_li_gen_1475607795731_0-link{border:0 !important;height:20px !important;text-decoration:none !important;padding:0 !important;margin:0 !important;display:inline-block !important;}#li_ui_li_gen_1475607795731_0 a#li_ui_li_gen_1475607795731_0-link:link, #li_ui_li_gen_1475607795731_0 a#li_ui_li_gen_1475607795731_0-link:visited, #li_ui_li_gen_1475607795731_0 a#li_ui_li_gen_1475607795731_0-link:hover, #li_ui_li_gen_1475607795731_0 a#li_ui_li_gen_1475607795731_0-link:active{border:0 !important;text-decoration:none !important;}#li_ui_li_gen_1475607795731_0 a#li_ui_li_gen_1475607795731_0-link:after{content:"." !important;display:block !important;clear:both !important;visibility:hidden !important;line-height:0 !important;height:0 !important;}#li_ui_li_gen_1475607795731_0 #li_ui_li_gen_1475607795731_0-logo{background-image:url(https://static.licdn.com/scds/common/u/images/apps/connect/sprites/sprite_connect_v14.png) !important;background-position:0px -593px !important;background-repeat:no-repeat !important;background-color:#0077b5 !important;background-size:initial !important;cursor:pointer !important;border:0 !important;border-right:1px solid #066094 !important;text-indent:-9999em !important;overflow:hidden !important;padding:0 !important;margin:0 !important;position:absolute !important;left:0px !important;top:0px !important;display:block !important;width:20px !important;height:20px !important;float:right !important;border-radius:2px !important;-webkit-border-radius:2px !important;border-top-right-radius:2px !important;border-bottom-right-radius:2px !important;-webkit-border-top-right-radius:2px !important;-webkit-border-bottom-right-radius:2px !important;}#li_ui_li_gen_1475607795731_0 #li_ui_li_gen_1475607795731_0-title{color:#fff !important;cursor:pointer !important;display:block !important;white-space:nowrap !important;float:left !important;margin-left:1px !important;vertical-align:top !important;overflow:hidden !important;text-align:center !important;height:18px !important;padding:0 4px 0 23px !important;border:1px solid #000 !important;border-top-color:#0077b5 !important;border-right-color:#0077b5 !important;border-bottom-color:#0077b5 !important;border-left-color:#0077b5 !important;text-shadow:0 -1px #005887 !important;line-height:20px !important;border-radius:2px !important;-webkit-border-radius:2px !important;border-top-right-radius:2px !important;border-bottom-right-radius:2px !important;-webkit-border-top-right-radius:2px !important;-webkit-border-bottom-right-radius:2px !important;background-color:#0077b5 !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#0077b5), color-stop(100%,#0077b5)) !important; background-image: -webkit-linear-gradient(top, #0077b5 0%, #0077b5 100%) !important;}#li_ui_li_gen_1475607795731_0.hovered #li_ui_li_gen_1475607795731_0-title{border:1px solid #000 !important;border-top-color:#0369a0 !important;border-right-color:#0369a0 !important;border-bottom-color:#0369a0 !important;border-left-color:#0369a0 !important;background-color:#0369a0 !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#0369a0), color-stop(100%,#0369a0)) !important; background-image: -webkit-linear-gradient(top, #0369a0 0%, #0369a0 100%) !important;}#li_ui_li_gen_1475607795731_0.clicked #li_ui_li_gen_1475607795731_0-title, #li_ui_li_gen_1475607795731_0.down #li_ui_li_gen_1475607795731_0-title{color:#fff !important;border:1px solid #000 !important;border-top-color:#066094 !important;border-right-color:#066094 !important;border-bottom-color:#066094 !important;border-left-color:#066094 !important;background-color:#066094 !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#066094), color-stop(100%,#066094)) !important; background-image: -webkit-linear-gradient(top, #066094 0%, #066094 100%) !important;}.IN-shadowed #li_ui_li_gen_1475607795731_0 #li_ui_li_gen_1475607795731_0-title{}.IN-shadowed #li_ui_li_gen_1475607795731_0.hovered #li_ui_li_gen_1475607795731_0-title{}.IN-shadowed #li_ui_li_gen_1475607795731_0.clicked #li_ui_li_gen_1475607795731_0-title, .IN-shadowed #li_ui_li_gen_1475607795731_0.down #li_ui_li_gen_1475607795731_0-title{}#li_ui_li_gen_1475607795731_0 #li_ui_li_gen_1475607795731_0-title-text, #li_ui_li_gen_1475607795731_0 #li_ui_li_gen_1475607795731_0-title-text *{color:#fff !important;font-size:11px !important;font-family:Arial, sans-serif !important;font-weight:bold !important;font-style:normal !important;-webkit-font-smoothing:antialiased !important;display:inline-block !important;background:transparent none !important;vertical-align:top !important;height:18px !important;line-height:20px !important;float:none !important;}#li_ui_li_gen_1475607795731_0 #li_ui_li_gen_1475607795731_0-title-text strong{font-weight:bold !important;}#li_ui_li_gen_1475607795731_0 #li_ui_li_gen_1475607795731_0-title-text em{font-style:italic !important;}#li_ui_li_gen_1475607795731_0.hovered #li_ui_li_gen_1475607795731_0-title-text, #li_ui_li_gen_1475607795731_0.hovered #li_ui_li_gen_1475607795731_0-title-text *{color:#fff !important;}#li_ui_li_gen_1475607795731_0.clicked #li_ui_li_gen_1475607795731_0-title-text, #li_ui_li_gen_1475607795731_0.down #li_ui_li_gen_1475607795731_0-title-text, #li_ui_li_gen_1475607795731_0.clicked #li_ui_li_gen_1475607795731_0-title-text *, #li_ui_li_gen_1475607795731_0.down #li_ui_li_gen_1475607795731_0-title-text *{color:#fff !important;}#li_ui_li_gen_1475607795731_0 #li_ui_li_gen_1475607795731_0-title #li_ui_li_gen_1475607795731_0-mark{display:inline-block !important;width:0px !important;overflow:hidden !important;}.success #li_ui_li_gen_1475607795731_0 #li_ui_li_gen_1475607795731_0-title{color:#fff !important;border-top-color:#0077b5 !important;border-right-color:#0077b5 !important;border-bottom-color:#0077b5 !important;border-left-color:#0077b5 !important;background-color:#0077b5 !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#0077b5), color-stop(100%,#0077b5)) !important; background-image: -webkit-linear-gradient(top, #0077b5 0%, #0077b5 100%) !important;}.success #li_ui_li_gen_1475607795731_0 #li_ui_li_gen_1475607795731_0-title-text, .success #li_ui_li_gen_1475607795731_0 #li_ui_li_gen_1475607795731_0-title-text *{color:#fff !important;}.IN-shadowed .success #li_ui_li_gen_1475607795731_0 #li_ui_li_gen_1475607795731_0-title{}.success #li_ui_li_gen_1475607795731_0.hovered #li_ui_li_gen_1475607795731_0-title{color:#fff !important;border-top-color:#0369a0 !important;border-right-color:#0369a0 !important;border-bottom-color:#0369a0 !important;border-left-color:#0369a0 !important;background-color:#0369a0 !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#0369a0), color-stop(100%,#0369a0)) !important; background-image: -webkit-linear-gradient(top, #0369a0 0%, #0369a0 100%) !important;}.success #li_ui_li_gen_1475607795731_0.hovered #li_ui_li_gen_1475607795731_0-title-text, .success #li_ui_li_gen_1475607795731_0.hovered #li_ui_li_gen_1475607795731_0-title-text *{color:#fff !important;}.success #li_ui_li_gen_1475607795731_0.clicked #li_ui_li_gen_1475607795731_0-title, .success #li_ui_li_gen_1475607795731_0.down #li_ui_li_gen_1475607795731_0-title{color:#fff !important;border-top-color:#066094 !important;border-right-color:#066094 !important;border-bottom-color:#066094 !important;border-left-color:#066094 !important;background-color:#066094 !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#066094), color-stop(100%,#066094)) !important; background-image: -webkit-linear-gradient(top, #066094 0%, #066094 100%) !important;}.success #li_ui_li_gen_1475607795731_0.clicked #li_ui_li_gen_1475607795731_0-title-text, .success #li_ui_li_gen_1475607795731_0.down #li_ui_li_gen_1475607795731_0-title-text, .success #li_ui_li_gen_1475607795731_0.clicked #li_ui_li_gen_1475607795731_0-title-text *, .success #li_ui_li_gen_1475607795731_0.down #li_ui_li_gen_1475607795731_0-title-text *{color:#fff !important;}.IN-shadowed .success #li_ui_li_gen_1475607795731_0.clicked #li_ui_li_gen_1475607795731_0-title, .IN-shadowed .success #li_ui_li_gen_1475607795731_0.down #li_ui_li_gen_1475607795731_0-title{}#li_ui_li_gen_1475607795740_1-container.IN-right {display:inline-block !important;float:left !important;overflow:visible !important;position:relative !important;height:20px !important;padding-left:2px !important;line-height:1px !important;cursor:pointer !important;}#li_ui_li_gen_1475607795740_1.IN-right {display:block !important;float:left !important;height:20px !important;margin-right:4px !important;padding-right:4px !important;background-image:url(https://static.licdn.com/scds/common/u/images/apps/connect/sprites/sprite_connect_v14.png) !important;background-color:transparent !important;background-repeat:no-repeat !important;background-position:right -447px !important;}#li_ui_li_gen_1475607795740_1-inner.IN-right {display:block !important;float:left !important;padding-left:8px !important;text-align:center !important;background-image:url(https://static.licdn.com/scds/common/u/images/apps/connect/sprites/sprite_connect_v14.png) !important;background-color:transparent !important;background-repeat:no-repeat !important;background-position:0px -426px !important;}#li_ui_li_gen_1475607795740_1-content.IN-right {display:inline !important;font-size:11px !important;color:#4e4e4e !important;font-weight:bold !important;font-family:Arial, sans-serif !important;line-height:20px !important;padding:0 5px 0 5px !important;}#li_ui_li_gen_1475607795740_1-container.IN-empty {display:none !important;}#li_ui_li_gen_1475607795740_1-container.IN-hidden #li_ui_li_gen_1475607795740_1 {display:none !important;}</style></head>
+<body style="">
+<div id="contain"><div id="subcontain"><div id="ttl"><div id="hdr"><div id="snav"><a href="http://lessthandot.com/login.php?backtrack=http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/?">Login</a> or 
+<a href="http://lessthandot.com/account.php?backtrack=http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/?">Sign Up</a> to become a member!
+<div id="googlesearch">
+      <!-- Google CSE Search Box Begins  -->
+<form action="http://lessthandot.com/GoogleSearch.php" id="searchbox_016541669483017633095:b33hj6z-rom">  <input type="hidden" name="cx" value="016541669483017633095:b33hj6z-rom">  <input type="hidden" name="cof" value="FORID:9">  <input type="text" name="q" size="25" style="border: 1px solid rgb(126, 157, 185); padding: 2px; background: url(&quot;https://www.google.com/cse/static/en/google_custom_search_watermark.gif&quot;) left center no-repeat rgb(255, 255, 255);"><input type="submit" name="sa" value="Search"> <input name="siteurl" type="hidden" value="blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/"><input name="ref" type="hidden" value="www.google.com/"><input name="ss" type="hidden" value=""></form>
+<script type="text/javascript" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/brand"></script></div></div><a href="http://lessthandot.com/" title="LessThanDot Launchpad" id="logoc"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/logo_prod.png" alt="LessThanDot Site Logo" border="0"></a><h1>LessThanDot</h1><div class="pgsttl">A Technical Community for IT Professionals</div></div><div id="nav">
+<ul>
+<li><a href="http://lessthandot.com/" title="LessThanDot Launchpad" id="h"><span>Launchpad</span></a></li>
+<li class="cur"><a href="http://blogs.lessthandot.com/" title="LessThanDot Blogs" id="b"><span>Blogs</span></a></li>
+<li><a href="http://forum.lessthandot.com/" title="LessThanDot Community Forums" id="f"><span>Forum</span></a></li>
+<li><a href="http://wiki.lessthandot.com/" title="LessThanDot Wiki Articles" id="w"><span>Wiki</span></a></li>
+<li><a href="http://sqlcop.lessthandot.com/" title="LessThanDot SQLCop" id="a"><span>SQLCop</span></a></li>
+<li><a href="http://lessthandot.com/account.php" title="Your Account Settings" id="r" class="l_ie"><span>My Account</span></a></li></ul></div>
+</div><div id="content">
+<div id="fac"><div id="fa">
+		<p>Less Than Dot is a community of passionate IT professionals and enthusiasts dedicated to sharing technical knowledge, experience, and assistance. Inside you will find reference materials, interesting technical discussions, and expert tips and commentary. Once you <a href="http://lessthandot.com/account.php">register for an account</a> you will have immediate access to the forums and all past articles and commentaries.</p><p><script type="text/javascript"><!--
+google_ad_client = "pub-4420276351760122";
+/* 468x15, created 11/1/09 */
+google_ad_slot = "5543219694";
+google_ad_width = 468;
+google_ad_height = 15;
+//-->
+</script>
+<script type="text/javascript" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/show_ads.js.download">
+</script><ins id="aswift_0_expand" style="display:inline-table;border:none;height:15px;margin:0;padding:0;position:relative;visibility:visible;width:468px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:15px;margin:0;padding:0;position:relative;visibility:visible;width:468px;background-color:transparent"><iframe width="468" height="15" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/saved_resource.html"></iframe></ins></ins></p>
+</div></div><div class="content-sidebar">
+	<div id="social" class="sdsec">
+		<h2>LTD Social Sitings</h2>
+		<div>
+		<a id="social_twitter" href="http://twitter.com/LessThanDot/" title="Follow us on Twitter"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_twitter.png" alt="Lessthandot twitter"></a> 
+		<a href="http://www.linkedin.com/groups?home=&amp;gid=113440" title="Join us on LinkedIn"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_linkedin.png" alt="Lessthandot Linkedin"></a> 
+		<a href="http://www.facebook.com/group.php?gid=19330511063" title="Join us on Facebook"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_facebook.png" alt="Lessthandot facebook"></a> 
+		<a href="http://lessthandot.com/rss.php" title="LessThanDot News Feed"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon.png" alt="Lessthandot rss"></a> 
+		</div>
+		<p><em>Note: Watch for social icons on posts by your favorite authors to follow their postings on these and other social sites.</em></p>
+	</div><div class="content-sidebar-section">
+<h2>Tag cloud</h2>
+	<p class="tag-cloud">
+		<a href="http://blogs.lessthandot.com/index.php/tag/net/" class="tag-link-245" title="21 topics" style="font-size: 8.9565217391304pt;">.net</a> <a href="http://blogs.lessthandot.com/index.php/tag/asp-net/" class="tag-link-168" title="21 topics" style="font-size: 8.9565217391304pt;">asp.net</a> <a href="http://blogs.lessthandot.com/index.php/tag/azure-2/" class="tag-link-321" title="26 topics" style="font-size: 9.7391304347826pt;">azure</a> <a href="http://blogs.lessthandot.com/index.php/tag/book/" class="tag-link-130" title="26 topics" style="font-size: 9.7391304347826pt;">book</a> <a href="http://blogs.lessthandot.com/index.php/tag/business-intelligence-2/" class="tag-link-256" title="30 topics" style="font-size: 10.260869565217pt;">business intelligence</a> <a href="http://blogs.lessthandot.com/index.php/tag/c/" class="tag-link-138" title="40 topics" style="font-size: 11.304347826087pt;">c#</a> <a href="http://blogs.lessthandot.com/index.php/tag/database/" class="tag-link-134" title="31 topics" style="font-size: 10.434782608696pt;">database</a> <a href="http://blogs.lessthandot.com/index.php/tag/excel/" class="tag-link-155" title="16 topics" style="font-size: 8pt;">excel</a> <a href="http://blogs.lessthandot.com/index.php/tag/gotcha/" class="tag-link-240" title="19 topics" style="font-size: 8.6086956521739pt;">gotcha</a> <a href="http://blogs.lessthandot.com/index.php/tag/how-to/" class="tag-link-272" title="44 topics" style="font-size: 11.652173913043pt;">how to</a> <a href="http://blogs.lessthandot.com/index.php/tag/mongodb/" class="tag-link-765" title="17 topics" style="font-size: 8.2608695652174pt;">mongodb</a> <a href="http://blogs.lessthandot.com/index.php/tag/nosql/" class="tag-link-775" title="18 topics" style="font-size: 8.4347826086957pt;">nosql</a> <a href="http://blogs.lessthandot.com/index.php/tag/performance/" class="tag-link-179" title="25 topics" style="font-size: 9.5652173913043pt;">performance</a> <a href="http://blogs.lessthandot.com/index.php/tag/security-2/" class="tag-link-398" title="25 topics" style="font-size: 9.5652173913043pt;">security</a> <a href="http://blogs.lessthandot.com/index.php/tag/sql/" class="tag-link-132" title="41 topics" style="font-size: 11.391304347826pt;">sql</a> <a href="http://blogs.lessthandot.com/index.php/tag/sql-advent-2012/" class="tag-link-1416" title="18 topics" style="font-size: 8.4347826086957pt;">sql advent 2012</a> <a href="http://blogs.lessthandot.com/index.php/tag/sql-friday/" class="tag-link-377" title="18 topics" style="font-size: 8.4347826086957pt;">sql friday</a> <a href="http://blogs.lessthandot.com/index.php/tag/sql-server/" class="tag-link-154" title="145 topics" style="font-size: 16.086956521739pt;">sql server</a> <a href="http://blogs.lessthandot.com/index.php/tag/sql-server-2000/" class="tag-link-366" title="45 topics" style="font-size: 11.739130434783pt;">sql server 2000</a> <a href="http://blogs.lessthandot.com/index.php/tag/sql-server-2005/" class="tag-link-327" title="118 topics" style="font-size: 15.391304347826pt;">sql server 2005</a> <a href="http://blogs.lessthandot.com/index.php/tag/sql-server-2008/" class="tag-link-152" title="237 topics" style="font-size: 18pt;">sql server 2008</a> <a href="http://blogs.lessthandot.com/index.php/tag/sql-server-2008-r2/" class="tag-link-548" title="38 topics" style="font-size: 11.130434782609pt;">sql server 2008 r2</a> <a href="http://blogs.lessthandot.com/index.php/tag/sql-server-2012/" class="tag-link-1161" title="76 topics" style="font-size: 13.739130434783pt;">sql server 2012</a> <a href="http://blogs.lessthandot.com/index.php/tag/ssis-2/" class="tag-link-501" title="52 topics" style="font-size: 12.260869565217pt;">ssis</a> <a href="http://blogs.lessthandot.com/index.php/tag/ssms/" class="tag-link-640" title="18 topics" style="font-size: 8.4347826086957pt;">ssms</a> <a href="http://blogs.lessthandot.com/index.php/tag/ssrs-2/" class="tag-link-557" title="27 topics" style="font-size: 9.9130434782609pt;">ssrs</a> <a href="http://blogs.lessthandot.com/index.php/tag/syndicated/" class="tag-link-1407" title="67 topics" style="font-size: 13.217391304348pt;">syndicated</a> <a href="http://blogs.lessthandot.com/index.php/tag/t-sql/" class="tag-link-185" title="26 topics" style="font-size: 9.7391304347826pt;">t-sql</a> <a href="http://blogs.lessthandot.com/index.php/tag/tip/" class="tag-link-194" title="46 topics" style="font-size: 11.826086956522pt;">tip</a> <a href="http://blogs.lessthandot.com/index.php/tag/unit-testing/" class="tag-link-162" title="16 topics" style="font-size: 8pt;">unit testing</a>	</p>
+</div>		<div class="content-sidebar-section">
+		<h2>Authors</h2>
+			<ul class="author-list dimmed">
+				<li><a href="http://blogs.lessthandot.com/index.php/author/SQLDenis/" title="Posts by SQLDenis">SQLDenis</a> <a href="http://blogs.lessthandot.com/index.php/author/SQLDenis/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (597)</li><li><a href="http://blogs.lessthandot.com/index.php/author/onpnt/" title="Posts by Ted Krueger (onpnt)">Ted Krueger (onpnt)</a> <a href="http://blogs.lessthandot.com/index.php/author/onpnt/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (355)</li><li><a href="http://blogs.lessthandot.com/index.php/author/grrlgeek/" title="Posts by Jes Borland">Jes Borland</a> <a href="http://blogs.lessthandot.com/index.php/author/grrlgeek/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (191)</li><li><a href="http://blogs.lessthandot.com/index.php/author/tarwn/" title="Posts by Eli Weinstock-Herman (tarwn)">Eli Weinstock-Herman (tarwn)</a> <a href="http://blogs.lessthandot.com/index.php/author/tarwn/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (160)</li><li><a href="http://blogs.lessthandot.com/index.php/author/koenverbeeck/" title="Posts by Koen Verbeeck">Koen Verbeeck</a> <a href="http://blogs.lessthandot.com/index.php/author/koenverbeeck/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (100)</li><li><a href="http://blogs.lessthandot.com/index.php/author/alexcuse/" title="Posts by Alex Ullrich">Alex Ullrich</a> <a href="http://blogs.lessthandot.com/index.php/author/alexcuse/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (55)</li><li><a href="http://blogs.lessthandot.com/index.php/author/gmmastros/" title="Posts by George Mastros (gmmastros)">George Mastros (gmmastros)</a> <a href="http://blogs.lessthandot.com/index.php/author/gmmastros/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (45)</li><li><a href="http://blogs.lessthandot.com/index.php/author/axel8s/" title="Posts by Axel Achten (axel8s)">Axel Achten (axel8s)</a> <a href="http://blogs.lessthandot.com/index.php/author/axel8s/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (28)</li><li><a href="http://blogs.lessthandot.com/index.php/author/naomi/" title="Posts by Naomi Nosonovsky">Naomi Nosonovsky</a> <a href="http://blogs.lessthandot.com/index.php/author/naomi/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (27)</li><li><a href="http://blogs.lessthandot.com/index.php/author/thirster42/" title="Posts by David Forck (thirster42)">David Forck (thirster42)</a> <a href="http://blogs.lessthandot.com/index.php/author/thirster42/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (24)</li><li><a href="http://blogs.lessthandot.com/index.php/author/chopstik/" title="Posts by chopstik">chopstik</a> <a href="http://blogs.lessthandot.com/index.php/author/chopstik/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (20)</li><li><a href="http://blogs.lessthandot.com/index.php/author/kconan/" title="Posts by Kevin Conan">Kevin Conan</a> <a href="http://blogs.lessthandot.com/index.php/author/kconan/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (18)</li><li><a href="http://blogs.lessthandot.com/index.php/author/robearl/" title="Posts by Rob Earl">Rob Earl</a> <a href="http://blogs.lessthandot.com/index.php/author/robearl/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (14)</li><li><a href="http://blogs.lessthandot.com/index.php/author/thatrickguy/" title="Posts by ThatRickGuy">ThatRickGuy</a> <a href="http://blogs.lessthandot.com/index.php/author/thatrickguy/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (12)</li><li><a href="http://blogs.lessthandot.com/index.php/author/sqlarcher/" title="Posts by SQLArcher">SQLArcher</a> <a href="http://blogs.lessthandot.com/index.php/author/sqlarcher/feed/"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon_sm.png" style="border: none;"></a> (11)</li>                <li><a href="http://lessthandot.com/Stats/BlogAuthors.php">More...</a></li>
+			</ul>
+		</div>
+				<div class="content-sidebar-section">
+		<h2>Categories</h2>
+			<ul class="categories-list">
+					<li class="cat-item cat-item-10"><a href="http://blogs.lessthandot.com/index.php/category/all/" title="View all posts filed under All Blogs">All Blogs</a>
+</li>
+	<li class="cat-item cat-item-5"><a href="http://blogs.lessthandot.com/index.php/category/architect/" title="View all posts filed under Architecture, Design and Strategy">Architecture, Design and Strategy</a>
+</li>
+	<li class="cat-item cat-item-6"><a href="http://blogs.lessthandot.com/index.php/category/datamgmt/" title="View all posts filed under Data Management">Data Management</a>
+</li>
+	<li class="cat-item cat-item-7"><a href="http://blogs.lessthandot.com/index.php/category/desktopdev/" title="View all posts filed under Desktop Developer">Desktop Developer</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="http://blogs.lessthandot.com/index.php/category/enterprisedev/" title="View all posts filed under Enterprise Developer">Enterprise Developer</a>
+</li>
+	<li class="cat-item cat-item-11"><a href="http://blogs.lessthandot.com/index.php/category/itprofessionals/" title="View all posts filed under IT Professionals">IT Professionals</a>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://blogs.lessthandot.com/index.php/category/itstudents/" title="View all posts filed under IT Students and Researchers">IT Students and Researchers</a>
+</li>
+	<li class="cat-item cat-item-1743"><a href="http://blogs.lessthandot.com/index.php/category/management/" title="View all posts filed under Management">Management</a>
+</li>
+	<li class="cat-item cat-item-9"><a href="http://blogs.lessthandot.com/index.php/category/sysadmins/" title="View all posts filed under System Admins">System Admins</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="http://blogs.lessthandot.com/index.php/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="http://blogs.lessthandot.com/index.php/category/webdev/" title="View all posts filed under Web Developer">Web Developer</a>
+</li>
+			</ul>
+		</div>
+		<div id="gad" class="sdsec"><h2>Google Ads</h2><script type="text/javascript"><!--
+google_ad_client = "pub-4420276351760122";
+/* 200x200, created 10/17/09 */
+google_ad_slot = "2171164233";
+google_ad_width = 200;
+google_ad_height = 200;
+//-->
+</script>
+<script type="text/javascript" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/show_ads.js.download">
+</script><ins id="aswift_1_expand" style="display:inline-table;border:none;height:200px;margin:0;padding:0;position:relative;visibility:visible;width:200px;background-color:transparent"><ins id="aswift_1_anchor" style="display:block;border:none;height:200px;margin:0;padding:0;position:relative;visibility:visible;width:200px;background-color:transparent"><iframe width="200" height="200" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/saved_resource(1).html"></iframe></ins></ins></div></div><div class="content-main">
+				<div class="post-navigation">
+				<div class="post-navigation-forward"><a href="http://blogs.lessthandot.com/index.php/itprofessionals/itprocesses/technical-nepotism-do-you-suffer/" rel="next">Technical nepotism…do you suffer from it?</a> » </div>
+				<div class="post-navigation-back">« <a href="http://blogs.lessthandot.com/index.php/itprofessionals/professionaldevelopment/august-2013-passmn-meeting/" rel="prev">August 2013 PASSMN Meeting</a></div>
+			</div>
+			<div class="post-area instapaper_body">
+				<div class="post-views instapaper_ignore"><div class="post-views-count">3</div></div>
+				<div class="post-title-line">
+										<h1 class="instapaper_ignore"><a href="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/" class="post-title">SSIS Deployment with PowerShell: Adding Environment References</a></h1>
+					<div class="post-byline">by <a href="http://blogs.lessthandot.com/index.php/author/koenverbeeck/" title="Posts by Koen Verbeeck" rel="author">Koen Verbeeck</a> on August 21, 2013 in category <a href="http://blogs.lessthandot.com/index.php/category/webdev/business-intelligence/" title="View all posts in Business Intelligence" rel="category tag">Business Intelligence</a> <a href="http://blogs.lessthandot.com/index.php/category/datamgmt/dbprogramming/mssqlserver/" title="View all posts in Microsoft SQL Server" rel="category tag">Microsoft SQL Server</a> <a href="http://blogs.lessthandot.com/index.php/category/datamgmt/dbadmin/mssqlserveradmin/" title="View all posts in Microsoft SQL Server Admin" rel="category tag">Microsoft SQL Server Admin</a> <a href="http://blogs.lessthandot.com/index.php/category/datamgmt/ssis/" title="View all posts in SSIS" rel="category tag">SSIS</a>. Article views: 30,511 </div>
+				</div>
+				<div class="post-tagline"><iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" title="Twitter Tweet Button" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/tweet_button.c6def25548e9590b13abaa1b3330b811.en.html" style="position: static; visibility: visible; width: 60px; height: 20px;" data-url="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/"></iframe><div class="socbtn"><div id="___plusone_0" style="text-indent: 0px; margin: 0px; padding: 0px; background: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 90px; height: 20px;"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 90px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" width="100%" id="I0_1475607795007" name="I0_1475607795007" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/fastbutton.html" data-gapiattached="true" title="+1"></iframe></div></div><a href="http://www.instapaper.com/hello2?url=http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/&amp;title=SSIS%20Deployment%20with%20PowerShell:%20Adding%20Environment%20References" class="instapaper_button">Instapaper</a></div>
+
+				<div class="post-content"><p style="text-align: justify;">With the release of the revamped Integration Services in SQL Server 2012, a bunch of new deployment methods were introduced for the project deployment model. My article <a href="http://www.sqlservercentral.com/articles/Integration+Services+(SSIS)/101240/">SSIS Deployments with SQL Server 2012</a> gives an overview of these deployment methods. One of these methods is using PowerShell to deploy your project to the SSIS Catalog. Matt Masson (<a href="http://www.mattmasson.com/">blog</a> | <a href="https://twitter.com/mattmasson">twitter</a>) has an excellent blog post on the subject: <a href="http://www.mattmasson.com/2012/06/publish-to-ssis-catalog-using-powershell/">Publish to SSIS Catalog using PowerShell</a>.</p>
+<p style="text-align: justify;">However, there’s one small step missing in the deployment script posted by Matt. I’ll use this blog article to post the entire deployment script, so that I have a full script online as an easy reference.</p>
+<p style="text-align: justify;">I have a very simple SSIS project that I want to deploy to the Catalog. It contains only one package that transfers data from AdventureWorks to another database. It has two connection managers: one for each database. Nothing fancy here.</p>
+<p style="text-align: justify;"><a href="http://blogs.lessthandot.com/media/users/koenverbeeck/SSISDeploymentPowershell/ssisproject.png?mtime=1377025062"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/ssisproject.png" alt="" width="542" height="385"></a></p>
+<p><span style="text-align: justify;">When I deploy the project, I want to hook the OLE_TEST connection manager to an environment, so that I can easily change the destination server and/or database.</span></p>
+<p style="text-align: justify;">The original script from Matt’s blog – modified for my project – looks like this:</p>
+
+<div class="bwp-syntax-block clearfix">
+<div class="bwp-syntax-toolbar" style="display: block;"><div class="bwp-syntax-control"><a href="javascript:;" class="bwp-syntax-source-switch" title="View Source Code"></a></div></div>
+<div class="bwp-syntax-wrapper clearfix bwp-syntax-simple"><table class="powershell"><thead><tr><td colspan="2" class="head">PowerShell</td></tr></thead><tbody><tr class="li1"><td class="ln"><pre class="de1">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+</pre></td><td class="de1"><pre class="de1"><span class="co1"># Variables</span>
+<span class="re0">$SSIS_server</span> <span class="sy0">=</span><span class="st0">"localhost"</span>
+<span class="re0">$ProjectFilePath</span> <span class="sy0">=</span> <span class="st0">"E:TestSSIS2012PowerShell_TestPowerShell_TestbinDevelopmentPowerShell_Test.ispac"</span>
+&nbsp;
+<span class="re0">$ProjectName</span> <span class="sy0">=</span> <span class="st0">"PowerShell_Test"</span>
+<span class="re0">$FolderName</span> <span class="sy0">=</span> <span class="st0">"PowerShellTest"</span>
+<span class="re0">$EnvironmentName</span> <span class="sy0">=</span> <span class="st0">"Test2"</span>
+&nbsp;
+<span class="co1"># Load the IntegrationServices Assembly</span>
+<span class="br0">[</span><span class="re4">System.Reflection.Assembly</span><span class="br0">]</span>::<span class="re5">LoadWithPartialName</span><span class="br0">(</span><span class="st0">"Microsoft.SqlServer.Management.IntegrationServices"</span><span class="br0">)</span> <span class="sy0">|</span> <span class="kw1">Out-Null</span>;
+&nbsp;
+<span class="co1"># Store the IntegrationServices Assembly namespace to avoid typing it every time</span>
+<span class="re0">$ISNamespace</span> <span class="sy0">=</span> <span class="st0">"Microsoft.SqlServer.Management.IntegrationServices"</span>
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"Connecting to server ..."</span>
+&nbsp;
+<span class="co1"># Create a connection to the server</span>
+<span class="re0">$sqlConnectionString</span> <span class="sy0">=</span> <span class="st0">"Data Source="</span> <span class="sy0">+</span> <span class="re0">$SSIS_server</span> <span class="sy0">+</span> <span class="st0">";Initial Catalog=master;Integrated Security=SSPI;"</span>
+<span class="re0">$sqlConnection</span> <span class="sy0">=</span> <span class="kw1">New-Object</span> System.Data.SqlClient.SqlConnection <span class="re0">$sqlConnectionString</span>
+&nbsp;
+<span class="co1"># Create the Integration Services object</span>
+<span class="re0">$integrationServices</span> <span class="sy0">=</span> <span class="kw1">New-Object</span> $ISNamespace<span class="st0">".IntegrationServices"</span> <span class="re0">$sqlConnection</span>
+&nbsp;
+<span class="re0">$catalog</span> <span class="sy0">=</span> <span class="re0">$integrationServices</span>.Catalogs<span class="br0">[</span><span class="st0">"SSISDB"</span><span class="br0">]</span>
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"Creating Folder "</span> <span class="re0">$FolderName</span> <span class="st0">" ..."</span>
+&nbsp;
+<span class="co1"># Create a new folder</span>
+<span class="re0">$folder</span> <span class="sy0">=</span> <span class="kw1">New-Object</span> $ISNamespace<span class="st0">".CatalogFolder"</span> <span class="br0">(</span><span class="re0">$catalog</span><span class="sy0">,</span> <span class="re0">$FolderName</span><span class="sy0">,</span> <span class="st0">"Folder description"</span><span class="br0">)</span>
+<span class="re0">$folder</span>.Create<span class="br0">(</span><span class="br0">)</span>
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"Deploying "</span> <span class="re0">$ProjectName</span> <span class="st0">" project ..."</span>
+&nbsp;
+<span class="co1"># Read the project file, and deploy it to the folder</span>
+<span class="br0">[</span><span class="re3">byte</span><span class="br0">[</span><span class="br0">]</span><span class="br0">]</span> <span class="re0">$projectFile</span> <span class="sy0">=</span> <span class="br0">[</span>System.IO.File<span class="br0">]</span>::ReadAllBytes<span class="br0">(</span><span class="re0">$ProjectFilePath</span><span class="br0">)</span>
+<span class="re0">$folder</span>.DeployProject<span class="br0">(</span><span class="re0">$ProjectName</span><span class="sy0">,</span> <span class="re0">$projectFile</span><span class="br0">)</span>
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"Creating environment ..."</span>
+&nbsp;
+<span class="re0">$environment</span> <span class="sy0">=</span> <span class="kw1">New-Object</span> $ISNamespace<span class="st0">".EnvironmentInfo"</span> <span class="br0">(</span><span class="re0">$folder</span><span class="sy0">,</span> <span class="re0">$EnvironmentName</span><span class="sy0">,</span> <span class="st0">"Description"</span><span class="br0">)</span>
+<span class="re0">$environment</span>.Create<span class="br0">(</span><span class="br0">)</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"Adding server variables ..."</span>
+&nbsp;
+<span class="co1"># Adding variable to our environment</span>
+<span class="co1"># Constructor args: variable name, type, default value, sensitivity, description</span>
+<span class="re0">$environment</span>.Variables.Add<span class="br0">(</span><span class="st0">"ServerName"</span><span class="sy0">,</span> <span class="br0">[</span>System.TypeCode<span class="br0">]</span>::String<span class="sy0">,</span> <span class="re0">$SSIS_server</span><span class="sy0">,</span> <span class="re0">$false</span><span class="sy0">,</span> <span class="st0">"ServerName"</span><span class="br0">)</span>
+<span class="re0">$environment</span>.Variables.Add<span class="br0">(</span><span class="st0">"DatabaseName"</span><span class="sy0">,</span><span class="br0">[</span>System.TypeCode<span class="br0">]</span>::String<span class="sy0">,</span> <span class="st0">"Test2"</span><span class="sy0">,</span> <span class="re0">$false</span><span class="sy0">,</span><span class="st0">"DatabaseName"</span><span class="br0">)</span>
+<span class="re0">$environment</span>.Alter<span class="br0">(</span><span class="br0">)</span>
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"Adding environment reference to project ..."</span>
+&nbsp;
+<span class="co1"># making project refer to this environment</span>
+<span class="re0">$project</span> <span class="sy0">=</span> <span class="re0">$folder</span>.Projects<span class="br0">[</span><span class="re0">$ProjectName</span><span class="br0">]</span>
+<span class="re0">$project</span>.References.Add<span class="br0">(</span><span class="re0">$EnvironmentName</span><span class="sy0">,</span> <span class="re0">$folder</span>.Name<span class="br0">)</span>
+<span class="re0">$project</span>.Alter<span class="br0">(</span><span class="br0">)</span> 
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"All done."</span></pre></td></tr></tbody></table></div>
+<div class="bwp-syntax-source"><pre class="no-parse"># Variables
+$SSIS_server ="localhost"
+$ProjectFilePath = "E:TestSSIS2012PowerShell_TestPowerShell_TestbinDevelopmentPowerShell_Test.ispac"
+
+$ProjectName = "PowerShell_Test"
+$FolderName = "PowerShellTest"
+$EnvironmentName = "Test2"
+ 
+# Load the IntegrationServices Assembly
+[System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.Management.IntegrationServices") | Out-Null;
+ 
+# Store the IntegrationServices Assembly namespace to avoid typing it every time
+$ISNamespace = "Microsoft.SqlServer.Management.IntegrationServices"
+ 
+Write-Host "Connecting to server ..."
+ 
+# Create a connection to the server
+$sqlConnectionString = "Data Source=" + $SSIS_server + ";Initial Catalog=master;Integrated Security=SSPI;"
+$sqlConnection = New-Object System.Data.SqlClient.SqlConnection $sqlConnectionString
+ 
+# Create the Integration Services object
+$integrationServices = New-Object $ISNamespace".IntegrationServices" $sqlConnection
+
+$catalog = $integrationServices.Catalogs["SSISDB"]
+ 
+Write-Host "Creating Folder " $FolderName " ..."
+ 
+# Create a new folder
+$folder = New-Object $ISNamespace".CatalogFolder" ($catalog, $FolderName, "Folder description")
+$folder.Create()
+ 
+Write-Host "Deploying " $ProjectName " project ..."
+ 
+# Read the project file, and deploy it to the folder
+[byte[]] $projectFile = [System.IO.File]::ReadAllBytes($ProjectFilePath)
+$folder.DeployProject($ProjectName, $projectFile)
+ 
+Write-Host "Creating environment ..."
+ 
+$environment = New-Object $ISNamespace".EnvironmentInfo" ($folder, $EnvironmentName, "Description")
+$environment.Create()            
+ 
+Write-Host "Adding server variables ..."
+ 
+# Adding variable to our environment
+# Constructor args: variable name, type, default value, sensitivity, description
+$environment.Variables.Add("ServerName", [System.TypeCode]::String, $SSIS_server, $false, "ServerName")
+$environment.Variables.Add("DatabaseName",[System.TypeCode]::String, "Test2", $false,"DatabaseName")
+$environment.Alter()
+ 
+Write-Host "Adding environment reference to project ..."
+ 
+# making project refer to this environment
+$project = $folder.Projects[$ProjectName]
+$project.References.Add($EnvironmentName, $folder.Name)
+$project.Alter() 
+ 
+Write-Host "All done."</pre></div></div>
+
+<p style="text-align: justify;">The script deploys the project to the Catalog, creates an environment and links the environment to the project. The environment has two variables: one to set the server name and one to set the database. Let’s inspect the results. When you right-click on the project, you can choose <em>Configure</em>. In the Configure window, you can see the connection managers used in the project in the Connection Managers tab. When we take a look at the Initial Catalog property of the OLE_TEST connection manager, you can see it is not yet linked to an environment variable.</p>
+<p style="text-align: justify;"><a href="http://blogs.lessthandot.com/media/users/koenverbeeck/SSISDeploymentPowershell/configureProject_before.png?mtime=1377025062"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/configureProject_before.png" alt="" width="785" height="536"></a></p>
+<p><span style="text-align: justify;">Instead, it is still linked to the default design-time value. Remark that you can configure a package/project with an environment without actually using parameters. This is because a few properties of a connection manager are linked to parameters behind the scenes. For example, the Initial Catalog property is linked to the parameter with the name </span><em>[CM.&lt;connection manager name&gt;.InitialCatalog]</em><span style="text-align: justify;">. You can find the parameter name at the top of the </span><em>Set Parameter Value</em><span style="text-align: justify;"> dialog box.</span></p>
+<p style="text-align: justify;">To link the environment variables to the connection manager, we need to add just a few lines to the script:</p>
+
+<div class="bwp-syntax-block clearfix">
+<div class="bwp-syntax-toolbar" style="display: none;"><div class="bwp-syntax-control"><a href="javascript:;" class="bwp-syntax-source-switch" title="View Source Code"></a></div></div>
+<div class="bwp-syntax-wrapper clearfix bwp-syntax-simple"><table class="powershell"><thead><tr><td colspan="2" class="head">PowerShell</td></tr></thead><tbody><tr class="li1"><td class="ln"><pre class="de1">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="de1"><pre class="de1"><span class="kw1">Write-Host</span> <span class="st0">"Setting environment variable on package connection string ..."</span>
+<span class="re0">$ssisPackage</span> <span class="sy0">=</span> <span class="re0">$project</span>.Packages.Item<span class="br0">(</span><span class="st0">"PowerShellTest.dtsx"</span><span class="br0">)</span>
+&nbsp;
+<span class="re0">$parServerName</span> <span class="sy0">=</span> <span class="st0">"CM.OLE_Test.ServerName"</span>
+<span class="re0">$ssisPackage</span>.Parameters<span class="br0">[</span><span class="re0">$parServerName</span><span class="br0">]</span>.<span class="kw2">Set</span><span class="br0">(</span><span class="st0">"Referenced"</span><span class="sy0">,</span><span class="st0">"ServerName"</span><span class="br0">)</span>
+&nbsp;
+<span class="re0">$parDatabaseName</span> <span class="sy0">=</span> <span class="st0">"CM.OLE_Test.InitialCatalog"</span>
+<span class="re0">$ssisPackage</span>.Parameters<span class="br0">[</span><span class="re0">$parDatabaseName</span><span class="br0">]</span>.<span class="kw2">Set</span><span class="br0">(</span><span class="st0">"Referenced"</span><span class="sy0">,</span><span class="st0">"DatabaseName"</span><span class="br0">)</span>
+&nbsp;
+<span class="re0">$ssisPackage</span>.Alter<span class="br0">(</span><span class="br0">)</span></pre></td></tr></tbody></table></div>
+<div class="bwp-syntax-source"><pre class="no-parse">Write-Host "Setting environment variable on package connection string ..."
+$ssisPackage = $project.Packages.Item("PowerShellTest.dtsx")
+
+$parServerName = "CM.OLE_Test.ServerName"
+$ssisPackage.Parameters[$parServerName].Set("Referenced","ServerName")
+
+$parDatabaseName = "CM.OLE_Test.InitialCatalog"
+$ssisPackage.Parameters[$parDatabaseName].Set("Referenced","DatabaseName")
+
+$ssisPackage.Alter()</pre></div></div>
+
+<p style="text-align: justify;">When you deploy the project to the server with these adjustments, we get the result we want:</p>
+<p style="text-align: justify;"><a href="http://blogs.lessthandot.com/media/users/koenverbeeck/SSISDeploymentPowershell/configureProject_after.png?mtime=1377025061"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/configureProject_after.png" alt="" width="747" height="375"></a></p>
+<p><span style="text-align: justify;">The environment variables are now linked to the two properties of the connection manager. When you run the package and choose the environment, the data is transferred to another database different from the one configured in the package, due to the reconfiguring of the connection manager by the environment variables.</span></p>
+<p style="text-align: justify;"><a href="http://blogs.lessthandot.com/media/users/koenverbeeck/SSISDeploymentPowershell/executePackage.png?mtime=1377025062"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/executePackage.png" alt="" width="530" height="363"></a></p>
+<p><span style="text-align: justify;">To wrap-up this post, here’s the entire deployment script for easier copy-paste:</span></p>
+
+<div class="bwp-syntax-block clearfix">
+<div class="bwp-syntax-toolbar" style="display: none;"><div class="bwp-syntax-control"><a href="javascript:;" class="bwp-syntax-source-switch" title="View Source Code"></a></div></div>
+<div class="bwp-syntax-wrapper clearfix bwp-syntax-simple"><table class="powershell"><thead><tr><td colspan="2" class="head">PowerShell</td></tr></thead><tbody><tr class="li1"><td class="ln"><pre class="de1">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+</pre></td><td class="de1"><pre class="de1"><span class="co1"># Variables</span>
+<span class="re0">$SSIS_server</span> <span class="sy0">=</span><span class="st0">"localhost"</span>
+<span class="re0">$ProjectFilePath</span> <span class="sy0">=</span> <span class="st0">"E:TestSSIS2012PowerShell_TestPowerShell_TestbinDevelopmentPowerShell_Test.ispac"</span>
+&nbsp;
+<span class="re0">$ProjectName</span> <span class="sy0">=</span> <span class="st0">"PowerShell_Test"</span>
+<span class="re0">$FolderName</span> <span class="sy0">=</span> <span class="st0">"PowerShellTest"</span>
+<span class="re0">$EnvironmentName</span> <span class="sy0">=</span> <span class="st0">"Test2"</span>
+&nbsp;
+<span class="co1"># Load the IntegrationServices Assembly</span>
+<span class="br0">[</span><span class="re4">System.Reflection.Assembly</span><span class="br0">]</span>::<span class="re5">LoadWithPartialName</span><span class="br0">(</span><span class="st0">"Microsoft.SqlServer.Management.IntegrationServices"</span><span class="br0">)</span> <span class="sy0">|</span> <span class="kw1">Out-Null</span>;
+&nbsp;
+<span class="co1"># Store the IntegrationServices Assembly namespace to avoid typing it every time</span>
+<span class="re0">$ISNamespace</span> <span class="sy0">=</span> <span class="st0">"Microsoft.SqlServer.Management.IntegrationServices"</span>
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"Connecting to server ..."</span>
+&nbsp;
+<span class="co1"># Create a connection to the server</span>
+<span class="re0">$sqlConnectionString</span> <span class="sy0">=</span> <span class="st0">"Data Source="</span> <span class="sy0">+</span> <span class="re0">$SSIS_server</span> <span class="sy0">+</span> <span class="st0">";Initial Catalog=master;Integrated Security=SSPI;"</span>
+<span class="re0">$sqlConnection</span> <span class="sy0">=</span> <span class="kw1">New-Object</span> System.Data.SqlClient.SqlConnection <span class="re0">$sqlConnectionString</span>
+&nbsp;
+<span class="co1"># Create the Integration Services object</span>
+<span class="re0">$integrationServices</span> <span class="sy0">=</span> <span class="kw1">New-Object</span> $ISNamespace<span class="st0">".IntegrationServices"</span> <span class="re0">$sqlConnection</span>
+&nbsp;
+<span class="re0">$catalog</span> <span class="sy0">=</span> <span class="re0">$integrationServices</span>.Catalogs<span class="br0">[</span><span class="st0">"SSISDB"</span><span class="br0">]</span>
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"Creating Folder "</span> <span class="re0">$FolderName</span> <span class="st0">" ..."</span>
+&nbsp;
+<span class="co1"># Create a new folder</span>
+<span class="re0">$folder</span> <span class="sy0">=</span> <span class="kw1">New-Object</span> $ISNamespace<span class="st0">".CatalogFolder"</span> <span class="br0">(</span><span class="re0">$catalog</span><span class="sy0">,</span> <span class="re0">$FolderName</span><span class="sy0">,</span> <span class="st0">"Folder description"</span><span class="br0">)</span>
+<span class="re0">$folder</span>.Create<span class="br0">(</span><span class="br0">)</span>
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"Deploying "</span> <span class="re0">$ProjectName</span> <span class="st0">" project ..."</span>
+&nbsp;
+<span class="co1"># Read the project file, and deploy it to the folder</span>
+<span class="br0">[</span><span class="re3">byte</span><span class="br0">[</span><span class="br0">]</span><span class="br0">]</span> <span class="re0">$projectFile</span> <span class="sy0">=</span> <span class="br0">[</span>System.IO.File<span class="br0">]</span>::ReadAllBytes<span class="br0">(</span><span class="re0">$ProjectFilePath</span><span class="br0">)</span>
+<span class="re0">$folder</span>.DeployProject<span class="br0">(</span><span class="re0">$ProjectName</span><span class="sy0">,</span> <span class="re0">$projectFile</span><span class="br0">)</span>
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"Creating environment ..."</span>
+&nbsp;
+<span class="re0">$environment</span> <span class="sy0">=</span> <span class="kw1">New-Object</span> $ISNamespace<span class="st0">".EnvironmentInfo"</span> <span class="br0">(</span><span class="re0">$folder</span><span class="sy0">,</span> <span class="re0">$EnvironmentName</span><span class="sy0">,</span> <span class="st0">"Description"</span><span class="br0">)</span>
+<span class="re0">$environment</span>.Create<span class="br0">(</span><span class="br0">)</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"Adding server variables ..."</span>
+&nbsp;
+<span class="co1"># Adding variable to our environment</span>
+<span class="co1"># Constructor args: variable name, type, default value, sensitivity, description</span>
+<span class="re0">$environment</span>.Variables.Add<span class="br0">(</span><span class="st0">"ServerName"</span><span class="sy0">,</span> <span class="br0">[</span>System.TypeCode<span class="br0">]</span>::String<span class="sy0">,</span> <span class="re0">$SSIS_server</span><span class="sy0">,</span> <span class="re0">$false</span><span class="sy0">,</span> <span class="st0">"ServerName"</span><span class="br0">)</span>
+<span class="re0">$environment</span>.Variables.Add<span class="br0">(</span><span class="st0">"DatabaseName"</span><span class="sy0">,</span><span class="br0">[</span>System.TypeCode<span class="br0">]</span>::String<span class="sy0">,</span> <span class="st0">"Test2"</span><span class="sy0">,</span> <span class="re0">$false</span><span class="sy0">,</span><span class="st0">"DatabaseName"</span><span class="br0">)</span>
+<span class="re0">$environment</span>.Alter<span class="br0">(</span><span class="br0">)</span>
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"Adding environment reference to project ..."</span>
+&nbsp;
+<span class="co1"># making project refer to this environment</span>
+<span class="re0">$project</span> <span class="sy0">=</span> <span class="re0">$folder</span>.Projects<span class="br0">[</span><span class="re0">$ProjectName</span><span class="br0">]</span>
+<span class="re0">$project</span>.References.Add<span class="br0">(</span><span class="re0">$EnvironmentName</span><span class="sy0">,</span> <span class="re0">$folder</span>.Name<span class="br0">)</span>
+<span class="re0">$project</span>.Alter<span class="br0">(</span><span class="br0">)</span> 
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"Setting environment variable on package connection string ..."</span>
+<span class="re0">$ssisPackage</span> <span class="sy0">=</span> <span class="re0">$project</span>.Packages.Item<span class="br0">(</span><span class="st0">"PowerShellTest.dtsx"</span><span class="br0">)</span>
+&nbsp;
+<span class="re0">$parServerName</span> <span class="sy0">=</span> <span class="st0">"CM.OLE_Test.ServerName"</span>
+<span class="re0">$ssisPackage</span>.Parameters<span class="br0">[</span><span class="re0">$parServerName</span><span class="br0">]</span>.<span class="kw2">Set</span><span class="br0">(</span><span class="st0">"Referenced"</span><span class="sy0">,</span><span class="st0">"ServerName"</span><span class="br0">)</span>
+&nbsp;
+<span class="re0">$parDatabaseName</span> <span class="sy0">=</span> <span class="st0">"CM.OLE_Test.InitialCatalog"</span>
+<span class="re0">$ssisPackage</span>.Parameters<span class="br0">[</span><span class="re0">$parDatabaseName</span><span class="br0">]</span>.<span class="kw2">Set</span><span class="br0">(</span><span class="st0">"Referenced"</span><span class="sy0">,</span><span class="st0">"DatabaseName"</span><span class="br0">)</span>
+&nbsp;
+<span class="re0">$ssisPackage</span>.Alter<span class="br0">(</span><span class="br0">)</span>
+&nbsp;
+<span class="kw1">Write-Host</span> <span class="st0">"All done."</span></pre></td></tr></tbody></table></div>
+<div class="bwp-syntax-source"><pre class="no-parse"># Variables
+$SSIS_server ="localhost"
+$ProjectFilePath = "E:TestSSIS2012PowerShell_TestPowerShell_TestbinDevelopmentPowerShell_Test.ispac"
+
+$ProjectName = "PowerShell_Test"
+$FolderName = "PowerShellTest"
+$EnvironmentName = "Test2"
+ 
+# Load the IntegrationServices Assembly
+[System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.Management.IntegrationServices") | Out-Null;
+ 
+# Store the IntegrationServices Assembly namespace to avoid typing it every time
+$ISNamespace = "Microsoft.SqlServer.Management.IntegrationServices"
+ 
+Write-Host "Connecting to server ..."
+ 
+# Create a connection to the server
+$sqlConnectionString = "Data Source=" + $SSIS_server + ";Initial Catalog=master;Integrated Security=SSPI;"
+$sqlConnection = New-Object System.Data.SqlClient.SqlConnection $sqlConnectionString
+ 
+# Create the Integration Services object
+$integrationServices = New-Object $ISNamespace".IntegrationServices" $sqlConnection
+
+$catalog = $integrationServices.Catalogs["SSISDB"]
+ 
+Write-Host "Creating Folder " $FolderName " ..."
+ 
+# Create a new folder
+$folder = New-Object $ISNamespace".CatalogFolder" ($catalog, $FolderName, "Folder description")
+$folder.Create()
+ 
+Write-Host "Deploying " $ProjectName " project ..."
+ 
+# Read the project file, and deploy it to the folder
+[byte[]] $projectFile = [System.IO.File]::ReadAllBytes($ProjectFilePath)
+$folder.DeployProject($ProjectName, $projectFile)
+ 
+Write-Host "Creating environment ..."
+ 
+$environment = New-Object $ISNamespace".EnvironmentInfo" ($folder, $EnvironmentName, "Description")
+$environment.Create()            
+ 
+Write-Host "Adding server variables ..."
+ 
+# Adding variable to our environment
+# Constructor args: variable name, type, default value, sensitivity, description
+$environment.Variables.Add("ServerName", [System.TypeCode]::String, $SSIS_server, $false, "ServerName")
+$environment.Variables.Add("DatabaseName",[System.TypeCode]::String, "Test2", $false,"DatabaseName")
+$environment.Alter()
+ 
+Write-Host "Adding environment reference to project ..."
+ 
+# making project refer to this environment
+$project = $folder.Projects[$ProjectName]
+$project.References.Add($EnvironmentName, $folder.Name)
+$project.Alter() 
+ 
+Write-Host "Setting environment variable on package connection string ..."
+$ssisPackage = $project.Packages.Item("PowerShellTest.dtsx")
+
+$parServerName = "CM.OLE_Test.ServerName"
+$ssisPackage.Parameters[$parServerName].Set("Referenced","ServerName")
+
+$parDatabaseName = "CM.OLE_Test.InitialCatalog"
+$ssisPackage.Parameters[$parDatabaseName].Set("Referenced","DatabaseName")
+
+$ssisPackage.Alter()
+
+Write-Host "All done."</pre></div></div>
+
+</div>
+				<div class="post-author">
+					<div class="userInfo"><h2>About the Author</h2><img class="bioPic" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/stickers-music-nirvana-s" alt="User bio image">Koen Verbeeck is a Microsoft Business Intelligence consultant at element61, helping clients to get insight in their data. Koen has a comprehensive knowledge of the SQL Server BI stack, with a particular love for Integration Services. He's also a speaker at various conferences.<br style="clear: left"><div class="bioSoc"><span class="bioSocTitle">Social Sitings</span><a href="http://twitter.com/Ko_Ver" title="koenverbeeck at Twitter" class="bioSocLink" rel="author"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_twitter.png" alt="Twitter"></a><a href="http://www.linkedin.com/in/kverbeeck" title="koenverbeeck at LinkedIn" class="bioSocLink" rel="author"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_linkedin.png" alt="LinkedIn"></a><a href="http://blogs.lessthandot.com/index.php/author/koenverbeeck/feed/" title="Blog RSS feed for koenverbeeck" class="bioSocLink"><img src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/bdg_rss_icon.png" alt="LTD RSS Feed"></a></div></div>				</div>
+				<div class="post-foot instapaper_ignore">
+					<div class="post-tagline">
+						<div class="post-foot-views"><label>Article views:</label> 30,511 </div>
+						<div class="post-foot-more-posts">
+                            <a href="http://blogs.lessthandot.com/index.php/author/koenverbeeck/">Read More Posts by Koen Verbeeck</a>
+						</div>
+					</div>
+					<div>
+						<label>Tags:</label> <a href="http://blogs.lessthandot.com/index.php/tag/catalog/" rel="tag">catalog</a>, <a href="http://blogs.lessthandot.com/index.php/tag/deployment/" rel="tag">deployment</a>, <a href="http://blogs.lessthandot.com/index.php/tag/powershell/" rel="tag">powershell</a>, <a href="http://blogs.lessthandot.com/index.php/tag/sql-server/" rel="tag">sql server</a>, <a href="http://blogs.lessthandot.com/index.php/tag/ssis-2/" rel="tag">ssis</a>, <a href="http://blogs.lessthandot.com/index.php/tag/syndicated/" rel="tag">syndicated</a> 
+					</div>
+					<div class="post-tagline" style="height: auto">
+						<iframe id="twitter-widget-1" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" title="Twitter Tweet Button" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/tweet_button.c6def25548e9590b13abaa1b3330b811.en(1).html" style="position: static; visibility: visible; width: 60px; height: 20px;" data-url="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/"></iframe><div class="socbtn"><div id="___plusone_1" style="text-indent: 0px; margin: 0px; padding: 0px; background: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 90px; height: 20px;"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 90px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" width="100%" id="I1_1475607795010" name="I1_1475607795010" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/fastbutton(1).html" data-gapiattached="true" title="+1"></iframe></div></div><a href="http://www.instapaper.com/hello2?url=http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/&amp;title=SSIS%20Deployment%20with%20PowerShell:%20Adding%20Environment%20References" class="instapaper_button">Instapaper</a><a href="http://news.ycombinator.com/submit" class="hn-share-button" data-title="SSIS Deployment with PowerShell: Adding Environment References" data-url="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/">Vote on HN</a><div class="socbtn"><script type="text/javascript">reddit_url = "http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/";reddit_title = "SSIS Deployment with PowerShell: Adding Environment References";</script><script type="text/javascript" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/button1.js.download"></script><iframe src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/button1.html" height="22" width="120" scrolling="no" frameborder="0"></iframe></div><div class="socbtn"><iframe src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/like.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:150px; height:21px;" allowtransparency="true"></iframe></div><br><div class="socbtn" style="margin-top: 5px;"><script src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/in.js.download" type="text/javascript"></script><span class="IN-widget" style="line-height: 1; vertical-align: baseline; display: inline-block; text-align: center;"><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1475607795731_0"><a id="li_ui_li_gen_1475607795731_0-link" href="javascript:void(0);"><span id="li_ui_li_gen_1475607795731_0-logo">in</span><span id="li_ui_li_gen_1475607795731_0-title"><span id="li_ui_li_gen_1475607795731_0-mark"></span><span id="li_ui_li_gen_1475607795731_0-title-text">Share</span></span></a></span></span><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1475607795740_1-container" class="IN-right IN-hidden"><span id="li_ui_li_gen_1475607795740_1" class="IN-right"><span id="li_ui_li_gen_1475607795740_1-inner" class="IN-right"><span id="li_ui_li_gen_1475607795740_1-content" class="IN-right">0</span></span></span></span></span></span><script type="IN/Share+init" data-counter="right" data-url="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/"></script></div><div class="socbtn" style="position:absolute;margin-top: 5px;"><script type="text/javascript">var dzone_url = 'http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/';</script><script type="text/javascript">var dzone_title = 'SSIS Deployment with PowerShell: Adding Environment References';</script><script type="text/javascript">var dzone_blurb = 'still don't know what this is';</script><script type="text/javascript">var dzone_style = '2';</script><script language="javascript" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/zoneit.js.download"></script></div>					</div>			
+				</div>
+				<div class="comments-area instapaper_ignore">
+	<h4 class="comments-title">
+		3 Comments	</h4>
+			<ol class="comments-list">
+					<li class="comment even thread-even depth-1" id="comment-2096310">
+				<div id="div-comment-2096310" class="comment-body">
+				<div class="comment-author vcard">
+			<img alt="" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/aacc0b3778407dd794e71fa70a75adfe" class="avatar avatar-64 photo" height="64" width="64">			<cite class="fn">Rodolfo Alvarez</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/#comment-2096310">
+			October 11, 2014 at 7:46 pm</a>		</div>
+
+		<p>Thanks a lot! This works great.</p>
+<p>I had trouble assigning the parameter values to the project, not to the package. I have a  project level connection manager. This is how I resolved it:</p>
+<p>Write-Host “Setting environment variable on package connection string …”<br>
+#$ssisPackage = $project.Packages.Item(“”PowerShellTest.dtsx”)<br>
+$ssisProject = $folder.Projects.Item($ProjectName)</p>
+<p>$parServerName = “CM.OLE_Test.ServerName”<br>
+#$ssisPackage.Parameters[$parServerName].Set(“Referenced”,”ServerName”)<br>
+$ssisProject.Parameters[$parServerName].Set(“Referenced”,”ServerName”)</p>
+<p>$parDatabaseName = “CM.OLE_Test.InitialCatalog”<br>
+#$ssisPackage.Parameters[$parDatabaseName].Set(“Referenced”,”DatabaseName”)<br>
+$ssisProject.Parameters[$parDatabaseName].Set(“Referenced”,”DatabaseName”)</p>
+<p>Now my problem is that when running any package the following message apears&gt;<br>
+TITLE: Microsoft SQL Server Management Studio<br>
+——————————</p>
+<p>The property “InitialCatalog” of connection manager “xxxxxx” is configured to use an environment variable, but no environment has been selected.  Select the “Environment” checkbox and specify the environment to use, or specify a literal value for the property.</p>
+<p>——————————</p>
+<p>How can I set the environment at a project level? Thanks in advance for any advice!</p>
+<p>BUTTONS:</p>
+<p>OK<br>
+——————————</p>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/?replytocom=2096310#respond" onclick="return addComment.moveForm(&quot;div-comment-2096310&quot;, &quot;2096310&quot;, &quot;respond&quot;, &quot;2146&quot;)">Reply</a>		</div>
+				</div>
+		</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-5002673">
+				<div id="div-comment-5002673" class="comment-body">
+				<div class="comment-author vcard">
+			<img alt="" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/0ac274e3e9eb2ce29d122aecf85fca3e" class="avatar avatar-64 photo" height="64" width="64">			<cite class="fn">Nico Atilano</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/#comment-5002673">
+			April 19, 2016 at 9:06 pm</a>		</div>
+
+		<p>Hi! i would like to ask regarding the part where you choose the environment when running a package, is it possible to automate it? like theres no need for me to tick the “Environment” checkbox. or it is ot possible to configure PowerShell to automatically check the “Environment” checkbox?</p>
+<p>im referencing my question in the statement below:</p>
+<p>“When you run the package and choose the environment, the data is transferred to another database different from the one configured in the package, due to the reconfiguring of the connection manager by the environment variables.”</p>
+<p>Hoping to hear from you the soonest possible.</p>
+<p>thank you very much.</p>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/?replytocom=5002673#respond" onclick="return addComment.moveForm(&quot;div-comment-5002673&quot;, &quot;5002673&quot;, &quot;respond&quot;, &quot;2146&quot;)">Reply</a>		</div>
+				</div>
+		</li><!-- #comment-## -->
+		<li class="comment byuser comment-author-koenverbeeck bypostauthor even thread-even depth-1" id="comment-5012795">
+				<div id="div-comment-5012795" class="comment-body">
+				<div class="comment-author vcard">
+			<img alt="" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/058ee33ff257e0210fa069bf7e94e036" class="avatar avatar-64 photo" height="64" width="64">			<cite class="fn">Koen Verbeeck</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/#comment-5012795">
+			April 26, 2016 at 6:35 am</a>		</div>
+
+		<p>Hi Nico,</p>
+<p>you can run SSIS packages in the SSIS catalog using stored procedures:<br>
+<a href="https://msdn.microsoft.com/en-us/library/ff878034.aspx" title="catalog.create_execution" rel="nofollow">catalog.create_execution</a></p>
+<p>The reference to the environment is passed as a parameter.<br>
+There’s probably a powershell function that does the same thing.</p>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/?replytocom=5012795#respond" onclick="return addComment.moveForm(&quot;div-comment-5012795&quot;, &quot;5012795&quot;, &quot;respond&quot;, &quot;2146&quot;)">Reply</a>		</div>
+				</div>
+		</li><!-- #comment-## -->
+		</ol>
+										<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://blogs.lessthandot.com/index.php/datamgmt/dbadmin/mssqlserveradmin/ssis-deployment-with-powershell-adding/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://blogs.lessthandot.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+																			<p class="comment-notes">Your email address will not be published. Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required="true"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" aria-required="true"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30"></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>						<p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code lang=""&gt; &lt;del datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;strike&gt; &lt;strong&gt; &lt;pre lang="" extra=""&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Post Comment">
+							<input type="hidden" name="comment_post_ID" value="2146" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+						</p>
+						<input type="hidden" id="killer_value" name="killer_value" value="db5918f29da4d5a22b857640feb3718a"><noscript>Sorry, but you are required to use a javascript enabled brower to comment here.</noscript>					</form>
+							</div><!-- #respond -->
+			</div>			</div>
+				<br style="clear: both;">
+</div>
+		</div>
+		<div id="page-footer">
+			<div id="botnav"><a href="http://lessthandot.com/" title="LessThanDot Launchpad">Launchpad</a> | <a href="http://lessthandot.com/account.php" title="Your Account Settings">My Account</a> | <a href="http://lessthandot.com/statistics.php" title="Statistics">Statistics</a> | <a href="http://lessthandot.com/donate.php" title="Donate">Donate</a> | <a href="http://lessthandot.com/contactus.php" title="Contact Us">Contact Us</a> | <a href="http://lessthandot.com/aboutus.php" title="About the LessThanDot Team">©2008 - 2016 LessThanDot, LLC</a></div>
+
+		<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-4471405-1']);
+		_gaq.push(['_trackPageview']);
+		_gaq.push(['_setCustomVar', 1, 'Environment', 'lessthandot.com', 3]);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	  </script>			<div class="validator"><a href="http://validator.w3.org/check?uri=referer">Valid XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer" title="Validate the CSS for this page at the W3C website">Valid CSS</a> | m_020716_d</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/plusone.js.download" gapi_processed="true"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var spam_destroyer = {"key":"db5918f29da4d5a22b857640feb3718a","lifetime":"3600","limit":"1475608178"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/kill.js.download"></script>
+
+
+<iframe name="oauth2relay249443241" id="oauth2relay249443241" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/postmessageRelay.html" tabindex="-1" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe><iframe id="rufous-sandbox" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: none;" src="./Less Than Dot - Blog - SSIS Deployment with PowerShell_ Adding Environment References_files/saved_resource(2).html"></iframe></body></html>
