@@ -1,8 +1,11 @@
-﻿param(
+﻿#Please substitute the default values for the below parameters with 
+#  what you have on your system!
+
+param(
         [string]$ServerInstance = 'localhost',
         [string]$DatabaseName = 'DataStudio4',        
         [string]$TableListSQL = 'SELECT name FROM sys.tables',
-        [string]$OutputFolder = 'C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Output'        
+        [string]$OutputFolder = 'C:\1Presentations\Practical_PowerShell\02_Generate_CSharpClasses\Output'        
 )
 
 #Get the list of tables in the database to generate c# models for
@@ -37,3 +40,12 @@ foreach ($table in $tables)
                     -Force `
                     -NoTypeInformation
 }
+
+
+
+#
+#Show the output generated and delete the files
+#
+#
+#Get-ChildItem $OutputFolder | Sort-Object -Property Length -Descending | Select-Object -First 1 | Get-Content | Select-Object -First 100
+#Get-Item $GeneratorLocation\Output\*.csv | Remove-Item

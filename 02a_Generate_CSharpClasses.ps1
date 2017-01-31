@@ -1,3 +1,18 @@
+#My Default location = C:\1Presentations\Practical_PowerShell\02_Generate_CSharpClasses\Output
+# Please input the location where you want the output to go
+#   on your computer after you download the demos!
+
+$ClassGenOutputLocation = Read-Host -Prompt 'What is the output folder to generate classes?'
+
+
+if ((Test-Path -LiteralPath $ClassGenOutputLocation) -eq $false)
+{
+    throw 'Path does not exist! Enter a valid path'
+}
+else
+{
+    "About to generate output to $ClassGenOutputLocation"
+}
 
 
 ##-----------------------------------------------------------------------
@@ -169,7 +184,7 @@ $tables = Invoke-Sqlcmd2 `
 foreach ($table in $tables)
 {
     $tableName = $table[0]
-    $outputFile = "C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Output\$tableName.cs"
+    $outputFile = "$ClassGenOutputLocation\$tableName.cs"
     Write-Verbose "Generating for $tableName to file $outputFile"
 
     #Replace variables with values (returns an array that we convert to a string to use as query)

@@ -2,3 +2,4 @@ SourceServerInstance; SourceDatabaseName; Query; TargetServerInstance; TargetDat
 (local); master; sp_who; (local); DC; dbo; sp_who_data
 (local); master; SELECT name, database_id, create_date, collation_name, state_desc, recovery_model_desc, log_reuse_wait_desc FROM SYS.DATABASES; (local); DC; dbo; sys_datatabases
 (local); master; sp_whoisactive @show_sleeping_spids  = 1, @show_system_spids = 1; (local); DC; dbo; sp_whoisactive_data
+(local); master; SELECT * FROM sys.dm_exec_procedure_stats; (local); DC; dbo; dm_exec_procedure_stats

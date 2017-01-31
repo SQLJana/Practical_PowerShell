@@ -14,36 +14,27 @@
 ##
 ##-----------------------------------------------------------------------
 
-. C:\1Presentations\2016_PracticalPoSh\OpenSource\Invoke-SQLCmd2.ps1
-. C:\1Presentations\2016_PracticalPoSh\OpenSource\Out-DataTable.ps1
-. C:\1Presentations\2016_PracticalPoSh\OpenSource\Add-SQLTable.ps1
-. C:\1Presentations\2016_PracticalPoSh\OpenSource\Write-DataTable.ps1
-. C:\1Presentations\2016_PracticalPoSh\OpenSource\Test-SQLTableExists.ps1
-#. C:\1Presentations\2016_PracticalPoSh\OpenSource\Collect-SQLDataToTable.ps1
-#. C:\1Presentations\2016_PracticalPoSh\OpenSource\Collect-SQLListDataToTable.ps1
-#. C:\1Presentations\2016_PracticalPoSh\OpenSource\Invoke-Async.ps1
+#My Default location = C:\1Presentations\Practical_PowerShell\OpenSource
+# Please input the location where you have the open-source files 
+#   on your computer after you download the demos!
 
+$OpenSourcePS1FilesLocation = Read-Host -Prompt 'Input the location of the open-source ps1 files for demo'
 
+if ((Test-Path -LiteralPath $OpenSourcePS1FilesLocation) -eq $false)
+{
+    throw 'Path does not exist! Enter a valid path'
+}
+else
+{
+    "About to dot-source from $OpenSourcePS1FilesLocation"
+}
 
-# This is the class generator
-# C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Generate-Classes.ps1
+. $OpenSourcePS1FilesLocation\Invoke-SQLCmd2.ps1
+. $OpenSourcePS1FilesLocation\Out-DataTable.ps1
+. $OpenSourcePS1FilesLocation\Add-SQLTable.ps1
+. $OpenSourcePS1FilesLocation\Write-DataTable.ps1
+. $OpenSourcePS1FilesLocation\Test-SQLTableExists.ps1
+#. $OpenSourcePS1FilesLocation\Collect-SQLDataToTable.ps1
+#. $OpenSourcePS1FilesLocation\Collect-SQLListDataToTable.ps1
+#. $OpenSourcePS1FilesLocation\Invoke-Async.ps1
 
-<#
-#Run the class generator - for msdb database!
-#------------------------------------------------
-C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Generate-Classes.ps1 `
-    -ServerInstance 'localhost' `
-    -DatabaseName 'msdb' `
-    -OutputFolder 'C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Output\'
-
-
-
-
-
-#Run the class generator - For ANOTHER database!
-#------------------------------------------------
-C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Generate-Classes.ps1 `
-    -ServerInstance 'localhost' `
-    -DatabaseName 'DataStudio4' `
-    -OutputFolder 'C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Output\'
-#>

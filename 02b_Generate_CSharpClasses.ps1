@@ -5,18 +5,19 @@
 ##
 ##-----------------------------------------------------------------------
 
-
 #Cleanup the old files 
-Get-Item C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Output\*.cs | Remove-Item
+Get-Item $ClassGenOutputLocation\*.cs | Remove-Item
 
 
 # We have moved up everything that can change into variables! 
 #-------------------------------------------------------------
+# Change the below to point to where you have the ModelGenerator.sql file
+[string]$GeneratorLocation = 'C:\1Presentations\Practical_PowerShell\02_Generate_CSharpClasses\'
 [string]$ServerInstance = 'localhost'
 [string]$DatabaseName = 'DataStudio4'
-[string]$GeneratorSQLFile = 'C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\ModelGenerator.sql'
+[string]$GeneratorSQLFile = "$GeneratorLocation\ModelGenerator.sql"
 [string]$TableListSQL = 'SELECT name FROM sys.tables'
-[string]$OutputFolder = 'C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Output'
+[string]$OutputFolder = $ClassGenOutputLocation
 [string]$Namespace = 'MyCompany.Business'
 [string]$PlaceHolderSchema = '&Schema'
 [string]$PlaceHolderTableName = '&TableName'

@@ -322,7 +322,7 @@ FUNCTION Stop-Process-Jana(
     {
         Write-Verbose ('Process $process = {0}, ID = {1}' -f $process.Name, $process.Id)
 
-        $process | Stop-Process
+        $process.Kill()
         $counter ++
     }
     
@@ -598,10 +598,10 @@ FUNCTION Make-HTML
 
 
 
-$file = 'c:\~tmp\Test.html' 
+$file = 'c:\Temp\Test.html' 
 Get-Process | Make-HTML -FileName $file
 Invoke-Item $file
-
+#Remove-Item $file
 
 
 #Notice the the input came from the pipeline into the function via automatic variable $input!
@@ -632,18 +632,18 @@ FUNCTION Make-HTML
 
 #Usage variation 1 - Using pipelined method
 
-$file = 'c:\~tmp\Test.html' 
+$file = 'c:\Temp\Test.html' 
 Get-Process | Make-HTML -FileName $file
 Invoke-Expression $file
-
+#Remove-Item $file
 
 
 #Usage variation 2 - Using non-pipelined method
 
-$file = 'c:\~tmp\Test.html' 
+$file = 'c:\Temp\Test.html' 
 Make-HTML -FileName $file -InputObject (Get-Process)
 Invoke-Expression $file
-
+#Remove-Item $file
 
 
 

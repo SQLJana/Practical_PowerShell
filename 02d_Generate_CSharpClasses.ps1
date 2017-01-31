@@ -7,7 +7,7 @@
 
 
 #Cleanup the old files 
-#Get-Item C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Output\*.cs | Remove-Item
+#Get-Item $GeneratorLocation\Output\*.cs | Remove-Item
 
 
 # Let us make a function by parameterizing key inputs
@@ -33,9 +33,9 @@
     
     Out-CSharpClass `
         -Database 'DataStudio4' `
-        -GeneratorSQLFile 'C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\ModelGenerator.sql' `
+        -GeneratorSQLFile 'C:\1Presentations\Practical_PowerShell\02_Generate_CSharpClasses\ModelGenerator.sql' `
         -TableListSQL 'SELECT name FROM sys.tables' `
-        -OutputFolder 'C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Output' `
+        -OutputFolder 'C:\1Presentations\Practical_PowerShell\02_Generate_CSharpClasses\Output' `
         -Namespace 'MyCompany.Business' `
         -PlaceHolderSchema '&Schema' `
         -PlaceHolderTableName '&TableName' `
@@ -62,12 +62,12 @@ function Out-CSharpClass
             [Parameter(Mandatory=$true)][string]$DatabaseName,
 
             [ValidateScript({Test-Path $_ -PathType ‘Leaf’})]
-            [Parameter(Mandatory=$false)][string]$GeneratorSQLFile = 'C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\ModelGenerator.sql',
+            [Parameter(Mandatory=$false)][string]$GeneratorSQLFile = 'C:\1Presentations\Practical_PowerShell\02_Generate_CSharpClasses\ModelGenerator.sql',
 
             [Parameter(Mandatory=$false)][string]$TableListSQL = 'SELECT name FROM sys.tables',
 
             [ValidateScript({Test-Path $_ -PathType ‘Container’})]
-            [Parameter(Mandatory=$false)][string]$OutputFolder = 'C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Output',
+            [Parameter(Mandatory=$false)][string]$OutputFolder = 'C:\1Presentations\Practical_PowerShell\02_Generate_CSharpClasses\Output',
 
             [Parameter(Mandatory=$false)][string]$Namespace = 'MyCompany.Business',
 

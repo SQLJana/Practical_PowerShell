@@ -12,13 +12,17 @@ if ($response -ne 'yes, I dont care about the demo') {
 #---------------------------------------------------------------------------------
 
 
+#My Default location = C:\1Presentations\Practical_PowerShell\OpenSource
+# Please input the location where you have the open-source files 
+#   on your computer after you download the demos!
+$CollectDataSourcesLocation = 'C:\1Presentations\Practical_PowerShell\04_Collect_Data\'
 
-. C:\1Presentations\2016_PracticalPoSh\OpenSource\Invoke-SQLCmd2.ps1
-. C:\1Presentations\2016_PracticalPoSh\OpenSource\Out-DataTable.ps1
-. C:\1Presentations\2016_PracticalPoSh\OpenSource\Add-SQLTable.ps1
-. C:\1Presentations\2016_PracticalPoSh\OpenSource\Write-DataTable.ps1
-. C:\1Presentations\2016_PracticalPoSh\OpenSource\Test-SQLTableExists.ps1
-. C:\1Presentations\2016_PracticalPoSh\OpenSource\Collect-SQLDataToTable.ps1
+. $OpenSourcePS1FilesLocation\Invoke-SQLCmd2.ps1
+. $OpenSourcePS1FilesLocation\Out-DataTable.ps1
+. $OpenSourcePS1FilesLocation\Add-SQLTable.ps1
+. $OpenSourcePS1FilesLocation\Write-DataTable.ps1
+. $OpenSourcePS1FilesLocation\Test-SQLTableExists.ps1
+. $OpenSourcePS1FilesLocation\Collect-SQLDataToTable.ps1
 
 
 ##-----------------------------------------------------------------------
@@ -27,16 +31,33 @@ if ($response -ne 'yes, I dont care about the demo') {
 ##
 ##-----------------------------------------------------------------------
 
+# Get the default path for data files and log files
+
+[string] $sql = @"
+SELECT DefaultDataPath = SERVERPROPERTY('InstanceDefaultDataPath'),
+	DefaultLogPath = SERVERPROPERTY('InstanceDefaultLogPath')
+"@
+
+$rslt = Invoke-Sqlcmd2 `
+            -ServerInstance '(local)' `
+            -Database 'master' `
+            -Query $sql `
+            -ConnectionTimeout 10
+
+
 
 # Create a new database named DC (DataCollector) for us to collect the data into
 #----------------------------------------
+$DataPath = $rslt["DefaultDataPath"]
+$LogPath = $rslt["DefaultLogPath"]
+
 [string] $sql = @"
 CREATE DATABASE [DC]
  CONTAINMENT = NONE
  ON  PRIMARY 
-( NAME = N'DC', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\DATA\DC.mdf' , SIZE = 4MB , FILEGROWTH = 1024KB )
+( NAME = N'DC', FILENAME = "$($DataPath)DC.mdf", SIZE = 10MB , FILEGROWTH = 1MB )
  LOG ON 
-( NAME = N'DC_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\DATA\DC_log.ldf' , SIZE = 1024KB , FILEGROWTH = 10%)
+( NAME = N'DC_log', FILENAME = "$($LogPath)DC_log.ldf" , SIZE = 10MB , FILEGROWTH = 10%)
 
 IF NOT EXISTS (SELECT name FROM sys.filegroups WHERE is_default=1 AND name = N'PRIMARY') ALTER DATABASE [DC] MODIFY FILEGROUP [PRIMARY] DEFAULT
 "@
@@ -56,7 +77,7 @@ $rslt = Invoke-Sqlcmd2 `
 Collect-SQLDataToTable `
         -SourceServerInstance '(local)' `
         -SourceDatabaseName 'master' `
-        -InputFile 'C:\1Presentations\2016_PracticalPoSh\OpenSource\dm_os_performance_counters.sql' `
+        -InputFile "$OpenSourcePS1FilesLocation\dm_os_performance_counters.sql" `
         -TargetServerInstance '(local)' `
         -TargetDatabaseName 'DC' `
         -TargetTableOwner 'dbo' `
@@ -67,6 +88,7 @@ Collect-SQLDataToTable `
 #Look for a tabled named dbo.PerfCounters
 
 
+#Notice that we even managed to add a couple of columns "ServerName and DateTimeStamp" to the table!
 
     
 
@@ -103,7 +125,7 @@ $pair2 | Add-Member -MemberType NoteProperty -Name SourceDatabaseName -Value 'Ma
 
 #This CSV has the list source, query and target information
 
-$serverList = Import-Csv -LiteralPath 'C:\1Presentations\2016_PracticalPoSh\04_ServerQueryInputData.csv' -Delimiter ';'
+$serverList = Import-Csv -LiteralPath "$CollectDataSourcesLocation\04_ServerQueryInputData.csv" -Delimiter ';'
 
 
 $serverList | Out-GridView -Wait

@@ -7,17 +7,18 @@
 
 
 #Cleanup the old files 
-#Get-Item C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Output\*.cs | Remove-Item
+#Get-Item $GeneratorLocation\Output\*.cs | Remove-Item
 
 
 # We have changed everything that can change into a script parameter!
+#   Change the file locations to match where you downloaded the samples to
 #-------------------------------------------------------------
 param(
         [Parameter(Mandatory=$false)][string]$ServerInstance = 'localhost',
         [Parameter(Mandatory=$true)][string]$DatabaseName,
-        [Parameter(Mandatory=$false)][string]$GeneratorSQLFile = 'C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\ModelGenerator.sql',
+        [Parameter(Mandatory=$false)][string]$GeneratorSQLFile = 'C:\1Presentations\Practical_PowerShell\02_Generate_CSharpClasses\ModelGenerator.sql',
         [Parameter(Mandatory=$false)][string]$TableListSQL = 'SELECT name FROM sys.tables',        
-        [Parameter(Mandatory=$false)][string]$OutputFolder = 'C:\1Presentations\2016_PracticalPoSh\02_Generate_CSharpClasses\Output',
+        [Parameter(Mandatory=$false)][string]$OutputFolder = 'C:\1Presentations\Practical_PowerShell\02_Generate_CSharpClasses\Output',
         [Parameter(Mandatory=$false)][string]$Namespace = 'MyCompany.Business',
         [Parameter(Mandatory=$false)][string]$PlaceHolderSchema = '&Schema',
         [Parameter(Mandatory=$false)][string]$PlaceHolderTableName = '&TableName',
@@ -57,3 +58,10 @@ foreach ($table in $tables)
             -Verbose) 4> $outputFile
 
 }
+
+
+
+#
+#Show the output generated and delete the files
+#
+#Get-Item $GeneratorLocation\Output\*.cs | Remove-Item
